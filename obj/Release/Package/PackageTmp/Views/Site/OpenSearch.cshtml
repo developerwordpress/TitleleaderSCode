@@ -1,0 +1,395 @@
+﻿@model List<TitleLeader.Models.Dataupload.DatauploadSave>
+@{
+    ViewBag.Title = "OpenSearch";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    var userdetails = new TitleLeader.Models.UserRegistrationModels.UserMaster();
+    userdetails = (TitleLeader.Models.UserRegistrationModels.UserMaster)ViewBag.UserDetails;
+    Int32 fillteroption = ViewBag.FillterOption != null ? Convert.ToInt32(ViewBag.FillterOption) : 0;
+}
+<link href="~/Content/css/style.css" rel="stylesheet" />
+<style>
+    .activeg {
+        display: block;
+    }
+
+    tr.hiddenn {
+        display: none;
+    }
+</style>
+<div class="padding-box">
+    <div class="open-cart-text-box open-cart-text-box-reserch">
+        <h6 class="haeding-text-gry"> Bacth search details</h6>
+        <div class="top-table">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Order #</th>
+                        <th>Order date</th>
+                        <th># of Searches</th>
+                        <th>Ordered by</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@Model.FirstOrDefault().order_no</td>
+                        <td>@Model.FirstOrDefault().order_date.ToString("MM-dd-yyyy")</td>
+                        <td>@ViewBag.OrderCount</td>
+                        <td>@userdetails.Firstname @userdetails.Lastname</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="staus-box staus-box-left">
+                    <p>Status</p>
+                    @{
+                        //var per = (ViewBag.OrderOpenSearchCount * 100) / 30;
+                        var OrderCompleteCount = ViewBag.OrderCount - ViewBag.OrderOpenSearchCount;
+                        var per = OrderCompleteCount / ViewBag.OrderCount * 100;
+                    }
+
+                    <p class="green-text">@per%</p>
+
+                </div>
+                <div class="pregrees-bar-right">
+                    <span class="prgress-text-ratio">@OrderCompleteCount of @ViewBag.OrderCount</span>
+                     <div class="progress">
+
+                                            <div class="progress-bar progress-bar-info" role="progressbar"  aria-valuenow="@per" aria-valuemin="0" aria-valuemax="100" style="width:@per%">
+  <span class="sr-only">@per % Complete</span>
+
+ </div>
+                         
+                                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @using (Html.BeginForm("OpenSearch", "Site", FormMethod.Post, new { @id = "form-search" }))
+        {
+            <div class="row">
+                <div class="col-sm-4 text-srch">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="btn-search" style="cursor:pointer;"><i class="glyphicon glyphicon-search"></i></span>
+                        <input id="orderitemno" type="text" class="form-control" name="orderitemno" value="@ViewBag.orderitem" placeholder="Search notifications">
+                        <input id="hdnval" name="hdnval" type="hidden" value="1" />
+                    </div>
+                </div>
+                <div class="col-sm-3 text-right">
+                    @*<ul class="filter-box">
+                            <li>view</li>
+                            <li><a href="#"><i class="fa fa-th-large" aria-hidden="true"></i></a></li>
+                            <li><a href="#"><i class="fa fa-th-list" aria-hidden="true"></i></a></li>
+                        </ul>*@
+                </div>
+                <div class="col-sm-3 text-right">
+                    <select class="form-control" id="ddlFillter" name="fillter">
+                        @switch (fillteroption)
+                        {
+                            case 0:
+                                <option value="0" selected="selected">Date</option>
+                                <option value="1">Order Number</option>
+                                <option value="2">Betch Number</option>
+                                <option value="3">Customer Name</option>
+                                <option value="4">Address</option>
+                                break;
+                            case 1:
+                                <option value="0">Date</option>
+                                <option value="1" selected="selected">Order Number</option>
+                                <option value="2">Betch Number</option>
+                                <option value="3">Customer Name</option>
+                                <option value="4">Address</option>
+                                break;
+                            case 2:
+                                <option value="0">Date</option>
+                                <option value="1">Order Number</option>
+                                <option value="2" selected="selected">Betch Number</option>
+                                <option value="3">Customer Name</option>
+                                <option value="4">Address</option>
+                                break;
+                            case 3:
+                                <option value="0">Date</option>
+                                <option value="1">Order Number</option>
+                                <option value="2">Betch Number</option>
+                                <option value="3" selected="selected">Customer Name</option>
+                                <option value="4">Address</option>
+                                break;
+                            case 4:
+                                <option value="0">Date</option>
+                                <option value="1">Order Number</option>
+                                <option value="2">Betch Number</option>
+                                <option value="3">Customer Name</option>
+                                <option value="4" selected="selected">Address</option>
+                                break;
+                        }
+                    </select>
+                </div>
+            </div>
+        }
+        <div class="table-responsive table-responsive-no-before">
+            @if (ViewBag.msg != "")
+            {
+                <div class="alert alert-warning alert-dismissible">
+                    <strong>Info!</strong> Searched data not found!!!.
+                </div>
+            }
+        </div>
+        <div class="table-responsive table-responsive-no-before">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Search #</th>
+                        <th>Address</th>
+                        <th>Unit</th>
+                        <th>City</th>
+                        <th>state</th>
+                        <th>Zip</th>
+                        <th>Country</th>
+                        <th>Status</th>
+                        <th> &nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody id="content">
+                    @foreach (var ord in Model)
+                    {
+                        <tr class="z">
+                            <td>@ord.item_no</td>
+                            <td>@ord.house_no @ord.street_add</td>
+                            <td>@ord.house_unit </td>
+                            <td>@ord.city </td>
+                            <td>@ord.state </td>
+                            <td>@ord.zip_code </td>
+                            <td>-</td>
+                            @if (ord.order_status == "O")
+                            {
+                                <td>OPEN</td>
+                            }
+                           <td><i class="fa fa-eye" aria-hidden="true" style="cursor:pointer"   onclick="myfunction(this)"></i><a type="button" style="cursor:pointer" data-container="body" data-toggle="popover"  data-html="true" data-placement="top" data-content='<ul class="nav"><li><a href="#" class="docs_name" ord_itemno="@ord.item_no" order_no="@ord.order_no"><i class="fa fa-file-pdf-o btn-danger"></i> Download PDF</li><li><a href="#"><i class="fa fa-envelope"></i> Email Report</li><li><a href="#"><i class="fa fa-print"></i> Print Report</li><li><a href="#" orderid="@ord.order_no" itemidl="@ord.item_no" class="btnaskquestion"><i class="fa fa-question"></i> Ask Question Report</li></ul>'><img class="img-icon" src="~/Content/images/dots.png"></a></td>
+                        </tr>
+                        <tr class="hiddenn">
+                            <td colspan="12" class="div23">
+                                <div class="table-vew-top">
+
+                                    <div class="text-right">
+                                        <span>Search details</span>
+                                        <ul class="pdf-section-list">
+                                            <li><a href="#" class="docs_name" order_no="@ord.order_no" ><i class="fa fa-file-pdf-o" aria-hidden="true"></i>Download PDF </a></li>
+                                            <li>|</li>
+                                            <li><a href="#"> <i class="fa fa-envelope" aria-hidden="true"></i>Email report </a></li>
+                                            <li>| </li>
+                                            <li><a href="#" class="btn_print"><i class="fa fa-print" aria-hidden="true"></i>Print report </a></li>
+                                            <li>|</li>
+                                            <li><a href="#" orderid="@ord.order_no" itemidl="@ord.item_no" class="btnaskquestion"><i class="fa fa-question" aria-hidden="true"></i> Ask a question</a></li>
+                                        </ul>
+
+                                    </div>
+                                    <div class="content-table" id="printdv">
+                                        <p>Search # :<strong> @ord.item_no</strong></p>
+                                        <p>Address:<strong> @ord.house_no @ord.street_add @ord.house_unit @ord.city @ord.state @ord.zip_code  -- </strong></p>
+                                        <p>Lot # : <strong> 123456789</strong></p>
+                                        <p>Tax ID # :<strong> 12-34568</strong></p>
+                                        <p>Square Block : <strong> N/A</strong></p>
+                                        <p>Subdivision :<strong> Chevy Chase</strong></p>
+                                        <p>Land Lot :<strong> 123456789</strong></p>
+                                        <p>District<strong> Bourbon</strong></p>
+                                        <p>Section <strong> 12</strong></p>
+                                        <p>Phase : <strong> 1</strong></p>
+                                        <p>Acerage :<strong> 15</strong></p>
+                                        <p>Owner Name :<strong>@ord.owner_first_name @ord.owner_last_name</strong></p>
+                                        <p>Aquire date :<strong> 12/21/1985</strong></p>
+                                        <p>Liens <strong> 0</strong></p>
+                                        <p>Search type : <strong>@ord.order_type @ord.item_no</strong></p>
+                                        <p>Record Type :<strong> Land record</strong></p>
+                                        <p>Tax Research :<strong> Current taxes only</strong></p>
+                                        <p>Coments</p>
+                                        <p>@ord.aditional_notes</p>
+
+                                    </div>
+                                </div>
+
+
+
+
+                            </td>
+
+                        </tr>
+                        <tr class="without-bg">
+                            <td colspan="9" style="background-color:#e4e7f2 !important;"></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pagination" id="pagingControls">
+
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog" id="content_block">
+
+    </div>
+</div>
+<div class="modal fade" id="myModal1" role="dialog">
+    <div class="modal-dialog" id="content_block">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><i class="glyphicon glyphicon-file"></i> Document List</h4>
+            </div>
+            <div class="modal-body">
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="divlink" divurl="@Url.Action("DownloadDocument","Site")">
+
+</div>
+@section footer
+{
+    <script>
+
+        function printData() {
+            var divToPrint = document.getElementById("printdv");
+            newWin = window.open("");
+            newWin.document.write(divToPrint.outerHTML);
+            newWin.print();
+            newWin.close();
+        }
+
+        $(document).on('click', ".btn_print", function () {
+            printData();
+        })
+
+        function myfunction(e) {
+            $(e).closest('tr').next('tr').toggle();
+        }
+        $(document).ready(function () {
+            $("#btn-search").click(function () {
+                $("#form-search").submit();
+            });
+            $('[data-toggle="popover"]').popover();
+            var Begin = function (response) {
+            }
+            BeginFun = Begin;
+
+            var Success = function (response) {
+                if (response == "success") {
+                    $("#myModal").modal("hide");
+
+                    swal({
+                        title: "Success!",
+                        text: "Thank you for asking an quesion!",
+                        type: "success",
+                        showCancelButton: false,
+                        confirmButtonColor: "#337ab7",
+                        confirmButtonText: "OK",
+                        closeOnConfirm: false,
+                        closeOnCancel: false
+                    });
+                }
+            }
+            SuccessFun = Success;
+
+            var Failure = function (response) {
+            }
+            FailureFun = Failure;
+
+            var Complete = function (response) {
+            }
+            CompleteFun = Complete;
+        });
+
+        $(document).on("click", ".btnaskquestion", function () {
+            $('[data-original-title]').popover('hide');
+            var order_no = $(this).attr("orderid");
+            var item_no = $(this).attr("itemidl");
+            AskQuestion(order_no, item_no);
+            $("#myModal").modal({
+                show: true,
+                backdrop: 'static',
+                keyboard: false
+            });
+        });
+        var AskQuestion = function (order_no, item_no) {
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: '@Url.Action("AskQuestion", "Site")',
+                data: { orderno: '' + order_no + '', itemno: '' + item_no + '' },
+                contentType: "application/html; charset=utf-8",
+                dataType: "html",
+                success: function (response) {
+                    $("#content_block").html(response);
+                    $.validator.unobtrusive.parse($("#content_block"));
+                },
+                failure: function (response) {
+                    alert("Error in Personal");
+                },
+                error: function (response) {
+                    alert("Error in Personal");
+                },
+                complete: function (response) {
+
+                }
+            });
+        }
+
+
+
+
+        function OnBegin(response) {
+            BeginFun(response);
+        }
+        function OnSuccess(response) {
+            SuccessFun(response);
+        }
+        function OnFailure(response) {
+            FailureFun(response);
+        }
+        function OnComplete(response) {
+            CompleteFun(response);
+        }
+
+        var pager = new Imtech.Pager();
+        $(document).ready(function () {
+          
+
+            $(document).on('click', '.docs_name', function () {
+                var orderno = $(this).attr("order_no");
+                $link = $(this);
+
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("Documentids", "Site")?orderno=' + orderno,
+                    success: function (result) {
+                        var list = '<ul class="list-group">';
+                        var link = $("#divlink").attr("divurl");
+                        $.each(result, function (key, val) {
+                            //list += '<li class="list-group-item"><a target="_blank" href="' + link + '?docid=' + val.DocumentId + '&docname=' + encodeURI(val.DocumentName) + '">' + val.DocumentName + "</a></li>";
+                            list += '<li class="list-group-item"><a target="_blank" href="http://app.titleleader.com/pdf/' + val.DocumentName + '">' + val.DocumentName + "</a></li>";
+                        });
+
+                        //list += '<li class="list-group-item"><a target="_blank" href="http://app.titleleader.com/titlesearchexample.pdf">Order_' + orderno + '.pdf</a></li>';
+                        list += '</ul>';
+
+                        $("#myModal1").find('.modal-body').html(list);
+                        $("#myModal1").modal("show");
+                    }
+                });
+            })
+
+
+
+        });
+    </script>
+}

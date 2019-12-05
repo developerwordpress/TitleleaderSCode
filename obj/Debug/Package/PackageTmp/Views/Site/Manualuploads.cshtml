@@ -1,0 +1,409 @@
+﻿@model TitleLeader.Models.Dataupload.Datauploads
+@{
+    /**/
+
+    ViewBag.Title = "Manual Uploads";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+
+<div class="row margin-0 text-dissable">
+    <div class="col-sm-12 margin-top-100">
+        <div class="option-text">
+            <span class="option-text-1">Manual search entry</span>
+            <p>Use our simple search form below</p>
+            <span class="text-size">Manually eneter individual properties to be searched. We recommend using our <a href="#">Bulk Order </a>process to perform multiple searchs.</span>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="manual-form">
+    <form id="form-add-property" autocomplete="off">
+        <h5 class="label-text">Search type</h5>
+        <div class="row">
+            <div class="col-xs-6">
+                @Html.DropDownListFor(m => m.Orders.search_type, (IEnumerable<SelectListItem>)ViewBag.SearchTypes, "Select Search Type", new { @class = "form-control", @required = "required" })
+                @Html.ValidationMessageFor(m => m.Orders.search_type)
+            </div>
+        </div>
+        <h5 class="label-text">Property address</h5>
+        <div class="row margin-botm-10">
+            <div class="col-xs-4">
+                @Html.TextBoxFor(m => m.Orders.house_no, new { @class = "form-control", @placeholder = "House Number", @required = "required" })
+                @Html.ValidationMessageFor(m => m.Orders.house_no)
+            </div>
+            <div class="col-xs-2">
+                @Html.TextBoxFor(m => m.Orders.house_unit, new { @class = "form-control", @placeholder = "Unit #", @required = "required" })
+              
+            </div>
+            <div class="col-xs-2">
+                @Html.TextBoxFor(m => m.Orders.street_no, new { @class = "form-control", @placeholder = "Street No", @required = "required" })
+             
+            </div>
+            <div class="col-xs-4">
+                @Html.TextBoxFor(m => m.Orders.street_addr, new { @class = "form-control", @placeholder = "Street Name", @required = "required" })
+                @Html.ValidationMessageFor(m => m.Orders.street_addr)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6">
+                @Html.TextBoxFor(m => m.Orders.city, new { @class = "form-control", @placeholder = "City", @required = "required" })
+                @Html.ValidationMessageFor(m => m.Orders.city)
+            </div>
+            <div class="col-xs-3">
+                @Html.DropDownListFor(m => m.Orders.state, (IEnumerable<SelectListItem>)ViewBag.States, "Select State", new { @class = "form-control", @required = "required" })
+                @Html.ValidationMessageFor(m => m.Orders.state)
+            </div>
+            <div class="col-xs-3">
+                @Html.TextBoxFor(m => m.Orders.zip_code, new { @class = "form-control zip-code", @placeholder = "Zip", @required = "required" })
+                @Html.ValidationMessageFor(m => m.Orders.zip_code)
+            </div>
+        </div>
+
+        <div id="div-add-owner" autocomplete="off">
+            <h5 class="label-text">Owner(s)</h5>
+            <div class="row" id="owner-section">
+                <div class="col-xs-6" name="namefixed">
+                    @Html.TextBoxFor(m => m.Owners.owner_first_name, new { @class = "form-control", @placeholder = "First Name", @required = "required" })
+                    @Html.ValidationMessageFor(m => m.Owners.owner_first_name)
+                </div>
+                <div class="col-xs-6" name="namefixed">
+                    @Html.TextBoxFor(m => m.Owners.owner_last_name, new { @class = "form-control", @placeholder = "Last Name", @required = "required" })
+                    @Html.ValidationMessageFor(m => m.Owners.owner_last_name)
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">
+                    <a href="javascript:void(0);" id="btn-add-owner" class="add-mew">+ Add another Owner</a>
+                </div>
+            </div>
+        </div>
+        <h5 class="label-text">Additional notes</h5>
+        <div class="row">
+            <div class="col-xs-12">
+                @Html.TextAreaFor(m => m.Orders.aditional_notes, new { @class = "form-control", @placeholder = "Write....", @required = "required", @style = "height:150px;" })
+                @Html.ValidationMessageFor(m => m.Orders.aditional_notes)
+            </div>
+        </div>
+        <div class="row sbmit-point btn-right-fix btn-right-fix-up">
+            <div class="col-xs-12">
+                <a href="javascript:void(0);" class="add-mew-btn" id="btn-add-property">+ Add another property</a>
+                <a href="javascript:void(0);" class="btn btn-success" style="margin-top:-42px;"><span class="badge badge-light" id="count-order">0</span></a>
+                <a id="btn-submit-order" href="javascript:void(0);" class="aside-btn btn btn-primary">Submit Order</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="modal" id="myModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Properties List</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table id="table-order" class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Search Type</th>
+                                <th>House No.</th>
+                                <th>House Unit</th>
+                                <th>Street Number</th>
+                                <th>Street Address</th>
+                                <th>city</th>
+                                <th>State</th>
+                                <th>Zip Code</th>
+                                <th>Notes</th>
+                                <th>Order Type</th>
+                                <th></th>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+        </div>
+    </div>
+</div>
+
+
+@section footer
+{
+    <script src="~/Content/jquery-mask/jquery.mask.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            $('.zip-code').mask('00000');
+
+            var form_add_order = $("#form-add-property");
+            var div_add_owner = $("#div-add-owner");
+            var btn_add_owner = $("#btn-add-owner");
+
+            var txt_first_name = $("#Owners_owner_first_name");
+            var txt_last_name = $("#Owners_owner_last_name");
+            var ddl_search_type = $("#Orders_search_type");
+            var txt_house_no = $("#Orders_house_no");
+            var txt_house_unit = $("#Orders_house_unit");
+            var txt_street_no = $("#Orders_street_no");
+            var txt_street_addr = $("#Orders_street_addr");
+            var txt_city = $("#Orders_city");
+            var txt_state = $("#Orders_state");
+            var txt_zip_code = $("#Orders_zip_code");
+            var txt_aditional_notes = $("#Orders_aditional_notes");
+
+
+            var check_table_order = function () {
+                var rowCount = $('#table-order>tbody> tr').length;
+                if (rowCount > 0) {
+                    $("#add-order").css("display", "block");
+                }
+                else {
+                    $("#add-order").css("display", "none");
+                }
+            }
+
+            //btn_add_owner.click(function () {
+
+            //});
+
+            $(document).on('click', '#btn-add-owner',function () {
+                $("#owner-section").append('<div class="col-xs-6" name="addnew"> <input class="form-control" data-val="true" data-val-required="Owner First Name is required." id="Owners_owner_first_name" name="Owners.owner_first_name" placeholder="First Name" required="required" type="text" value="" /> <span class="field-validation-valid" data-valmsg-for="Owners.owner_first_name" data-valmsg-replace="true"></span> </div> <div class="col-xs-6" name="addnew"> <input class="form-control" data-val="true" data-val-required="Owner Last Name is required." id="Owners_owner_last_name" name="Owners.owner_last_name" placeholder="Last Name" required="required" type="text" value="" /> <span class="field-validation-valid" data-valmsg-for="Owners.owner_last_name" data-valmsg-replace="true"></span> </div>');
+            });
+
+
+            $(document).on('click', '.btn-rm-order', function () {
+                $(this).closest('tr').remove();
+                var rowCount = $('#table-order>tbody> tr').length;
+                $("#count-order").html(rowCount);
+            });
+
+            var clear_form = function () {
+                txt_aditional_notes.val("");
+                txt_city.val("");
+                $("#owner-section input[type=text]").each(function () {
+                    $(this).val("");
+                });
+                $("#owner-section input[type=text]").each(function () {
+                    if ($(this).parent().attr("name") != "namefixed") {
+                        $(this).parent().remove();
+                    }
+                });
+                txt_house_no.val("");
+                txt_house_unit.val("");
+                txt_state.val("");
+                txt_street_no.val("");
+                txt_street_addr.val("");
+                txt_zip_code.val("");
+                ddl_search_type.val("");
+            }
+
+            $("#btn-add-property").click(function () {
+                var validator = $("#form-add-property").validate();
+                validator.element("#Owners_owner_first_name");
+                validator.element("#Owners_owner_last_name");
+                validator.element("#Orders_search_type");
+                validator.element("#Orders_house_no");
+                validator.element("#Orders_house_unit");
+                validator.element("#Orders_street_no");
+                validator.element("#Orders_street_addr");
+                validator.element("#Orders_city");
+                validator.element("#Orders_state");
+                validator.element("#Orders_zip_code");
+                validator.element("#Orders_aditional_notes");
+
+                if (validator.valid()) {
+                    var rows = [];
+                    var flag1 = false, flag2 = false;
+                    var item = {};
+                    $("#owner-section input[type=text]").each(function () {
+                        var txtobj = $(this);
+                        if ($(this).attr("id") == "Owners_owner_first_name") {
+                            item["owner_first_name"] = txtobj.val();
+                            flag1 = true;
+                        }
+                        if ($(this).attr("id") == "Owners_owner_last_name") {
+                            item["owner_last_name"] = txtobj.val();
+                            flag2 = true;
+                        }
+                        if (flag1 && flag2) {
+                            rows.push(item);
+                            item = {};
+                            //alert(JSON.stringify(rows));
+                            flag1 = false;
+                            flag2 = false;
+                        }
+                    });
+
+                    $('#table-order>tbody').append('<tr>' +
+                        '<td item="' + ddl_search_type.val() + '">' + $("#Orders_search_type option:selected").text() + '</td>' +
+                        '<td>' + txt_house_no.val() + '</td>' +
+                        '<td>' + txt_house_unit.val() + '</td>' +
+                         '<td>' + txt_street_no.val() + '</td>' +
+                        '<td>' + txt_street_addr.val() + '</td>' +
+                        '<td>' + txt_city.val() + '</td>' +
+                        '<td item="' + txt_state.val() + '">' + $("#Orders_state option:selected").text() + '</td>' +
+                        '<td>' + txt_zip_code.val() + '</td>' +
+                        '<td>' + txt_aditional_notes.val() + '</td>' +
+                        '<td>Manual</td>' +
+                        '<td style="display:none;">' + JSON.stringify(rows) + '</td>' +
+                        '<td><a href="javascript:void(0);" class="btn btn-danger btn-rm-order"> <i class="fa fa-trash" aria-hidden="true"></i></a></td>' +
+                        '</tr>');
+                    var rowCount = $('#table-order>tbody> tr').length;
+                    $("#count-order").html(rowCount);
+                    clear_form();
+                }
+                check_table_order();
+            });
+
+            $("#btn-submit-order").click(function () {
+                var rowCount = $('#table-order>tbody> tr').length;
+                if (rowCount > 0) {
+                    var rows = [];
+                    $('#table-order>tbody>tr').each(function (i, n) {
+                        $row = $(this);
+                        rows.push({
+                            "search_type": $row.find('td:eq(0)').attr("item"),
+                            "house_no": $row.find('td:eq(1)').text(),
+                            "house_unit": $row.find('td:eq(2)').text(),
+                            "street_no": $row.find('td:eq(3)').text(),
+                            "street_addr": $row.find('td:eq(4)').text(),
+                            "city": $row.find('td:eq(5)').text(),
+                            "state": $row.find('td:eq(6)').attr("item"),
+                            "zip_code": parseInt($row.find('td:eq(7)').text()),
+                            "aditional_notes": $row.find('td:eq(8)').text(),
+                            "order_type": $row.find('td:eq(9)').text(),
+                            "Owners": jQuery.parseJSON($row.find('td:eq(10)').text()),
+                        });
+                    });
+                    function_submit(rows);
+                }
+                else {
+                    var validator = $("#form-add-property").validate();
+                    validator.element("#Owners_owner_first_name");
+                    validator.element("#Owners_owner_last_name");
+                    validator.element("#Orders_search_type");
+                    validator.element("#Orders_house_no");
+                    validator.element("#Orders_house_unit");
+                    validator.element("#Orders_street_no");
+                    validator.element("#Orders_street_addr");
+                    validator.element("#Orders_city");
+                    validator.element("#Orders_state");
+                    validator.element("#Orders_zip_code");
+                    validator.element("#Orders_aditional_notes");
+                    if (validator.valid()) {
+                        var rows = [];
+                        var flag1 = false, flag2 = false;
+                        var item = {};
+                        $("#owner-section input[type=text]").each(function () {
+                            var txtobj = $(this);
+                            if ($(this).attr("id") == "Owners_owner_first_name") {
+                                item["owner_first_name"] = txtobj.val();
+                                flag1 = true;
+                            }
+                            if ($(this).attr("id") == "Owners_owner_last_name") {
+                                item["owner_last_name"] = txtobj.val();
+                                flag2 = true;
+                            }
+                            if (flag1 && flag2) {
+                                rows.push(item);
+                                item = {};
+                                //alert(JSON.stringify(rows));
+                                flag1 = false;
+                                flag2 = false;
+                            }
+                        });
+                        var rows1 = [];
+                        rows1.push({
+                            "search_type": ddl_search_type.val(),
+                            "house_no": txt_house_no.val(),
+                            "house_unit": txt_house_unit.val(),
+                            "street_no": txt_street_no.val(),
+                            "street_addr": txt_street_addr.val(),
+                            "city": txt_city.val(),
+                            "state": txt_state.val(),
+                            "zip_code": txt_zip_code.val(),
+                            "aditional_notes": txt_aditional_notes.val(),
+                            "order_type": "Manual",
+                            "Owners": rows,
+                        });
+                        function_submit(rows1);
+                    }
+                }
+            });
+
+            var function_submit = function (form_data) {
+                $.ajax({
+                    type: "POST",
+                    async: false,
+                    url: '@Url.Action("Manualuploads", "Site")',
+                    data: JSON.stringify(form_data),
+                    contentType: "application/json ; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        if (response != "error") {
+                            swal({
+                                title: "Success!",
+                                text: "Order no : " + response,
+                                type: "success",
+                                showCancelButton: false,
+                                confirmButtonColor: "#337ab7",
+                                confirmButtonText: "OK",
+                                closeOnConfirm: false,
+                                closeOnCancel: false
+                            }, function (isConfirm) {
+                                var url = '@Url.Action("Orderconfirm", "Site")?' + 'ordno=' + response;
+                                window.location.href = url;
+                            });
+                        }
+                    },
+                    failure: function (response) {
+                        swal({
+                            title: "Error!",
+                            text: "Your session has been expiry please login",
+                            type: "error",
+                            showCancelButton: false,
+                            confirmButtonColor: "#337ab7",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: false,
+                            closeOnCancel: false
+                        }, function (isConfirm) {
+                            var url = '@Url.Action("Login", "Home")';
+                            window.location.href = url;
+                        });
+                    },
+                    error: function (response) {
+                        swal({
+                            title: "Error!",
+                            text: "Your session has been expiry please login",
+                            type: "error",
+                            showCancelButton: false,
+                            confirmButtonColor: "#337ab7",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: false,
+                            closeOnCancel: false
+                        }, function (isConfirm) {
+                            var url = '@Url.Action("Login", "Home")';
+                            window.location.href = url;
+                        });
+                    }
+                });
+            }
+
+
+            $("#count-order").click(function () {
+                var rowCount = $('#table-order>tbody> tr').length;
+                if (rowCount > 0) {
+                    $('#myModal').modal('show');
+                }
+            });
+        });
+    </script>
+}
+

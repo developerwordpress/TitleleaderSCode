@@ -1,0 +1,60 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Title Leader</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="~/Content/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="~/Content/sweetalert/sweetalert.css" rel="stylesheet" />
+
+    <link href="~/Content/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/datatables/buttons.bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/datatables/fixedHeader.bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/datatables/responsive.bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/datatables/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+
+    <link href="~/Content/css/style.css" rel="stylesheet" />
+</head>
+<body class="blue-bg">
+    <div class="register-page-full">
+        <div class="register-left-secttion">
+            <img src="~/Content/images/white-logo.png" class="logo-login">
+            <img src="~/Content/images/dot.png" class="logo-bottom">
+        </div>
+        <div id="div-placeholder">
+            @RenderBody()
+        </div>
+    </div>
+
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/modernizr-2.6.2.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Content/sweetalert/sweetalert.min.js"></script>
+    <script src="~/Content/jquery-validation/jsonTable.js"></script>
+    <script src="~/Content/jquery-validation/TableToJson.js"></script>
+    <script src="~/Content/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Content/datatables/dataTables.bootstrap.js"></script>
+    <script src="~/Content/datatables/dataTables.buttons.min.js"></script>
+    <script src="~/Content/datatables/buttons.bootstrap.min.js"></script>
+    <script src="~/Content/datatables/jszip.min.js"></script>
+    <script src="~/Content/datatables/pdfmake.min.js"></script>
+    <script src="~/Content/datatables/vfs_fonts.js"></script>
+    <script src="~/Content/datatables/buttons.html5.min.js"></script>
+    <script src="~/Content/datatables/buttons.print.min.js"></script>
+    <script src="~/Content/datatables/dataTables.fixedHeader.min.js"></script>
+    <script src="~/Content/datatables/dataTables.keyTable.min.js"></script>
+    <script src="~/Content/datatables/dataTables.responsive.min.js"></script>
+    <script src="~/Content/datatables/responsive.bootstrap.min.js"></script>
+    <script src="~/Content/datatables/dataTables.scroller.min.js"></script>
+
+    @RenderSection("footer", false)
+</body>
+</html>

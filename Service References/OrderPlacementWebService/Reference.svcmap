@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="05a11f41-280e-4df8-93cc-3adc7043e189" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address=" https://www.fnas.com/OrderPlacementService/v2/Service.svc?wsdl" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="OrderPlacementService.wsdl" MetadataType="Wsdl" ID="16507d2e-3742-4932-a2c6-b18528b9a562" SourceId="1" SourceUrl="https://www.fnas.com/OrderPlacementService/v2/Service.svc?wsdl" />
+    <MetadataFile FileName="Service.xsd" MetadataType="Schema" ID="15eafd50-ed98-49d5-95f5-9be1a0ef18ad" SourceId="1" SourceUrl="https://www.fnas.com/OrderPlacementService/v2/Service.svc?xsd=xsd4" />
+    <MetadataFile FileName="Service1.xsd" MetadataType="Schema" ID="0056235f-dcf3-4a2c-9f28-b7ee7b23d775" SourceId="1" SourceUrl="https://www.fnas.com/OrderPlacementService/v2/Service.svc?xsd=xsd0" />
+    <MetadataFile FileName="Service2.xsd" MetadataType="Schema" ID="19b4cd91-7432-468c-8116-b8f95e5cbab3" SourceId="1" SourceUrl="https://www.fnas.com/OrderPlacementService/v2/Service.svc?xsd=xsd1" />
+    <MetadataFile FileName="Service3.xsd" MetadataType="Schema" ID="d65cbb89-62a8-4956-8885-2cb842d6eb5a" SourceId="1" SourceUrl="https://www.fnas.com/OrderPlacementService/v2/Service.svc?xsd=xsd2" />
+    <MetadataFile FileName="Service4.xsd" MetadataType="Schema" ID="dd60c96d-4fb0-40ae-aac9-165ca8f77632" SourceId="1" SourceUrl="https://www.fnas.com/OrderPlacementService/v2/Service.svc?xsd=xsd3" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

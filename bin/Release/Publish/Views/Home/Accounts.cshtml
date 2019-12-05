@@ -1,0 +1,710 @@
+﻿@model dynamic
+@{
+    ViewBag.Title = "Accounts";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<div class="padding-box">
+    <h5>Account Settings</h5>
+    <div class="row">
+        <div class="col-md-3">
+            @using (Ajax.BeginForm("ChangeProfileImage", "Home", new AjaxOptions { OnBegin = "OnBegin", OnSuccess = "OnSuccess", OnFailure = "OnFailure", OnComplete = "OnComplete" }, new { @id = "formphoto", enctype = "multipart/form-data" }))
+            {
+                <input type="file" name="ProfilePhoto" style="display:none;" id="profilephoto" />
+                <div class="img-responsive">
+                    <img src="@Url.Action("GetProfilePhoto","Home")" alt="Profile" class="img-responsive img-circle" style="height:116px;width:116px;" id="imgprofile" />
+                </div>
+                <button class="btn btn-primary btn-sm" type="button" style="width:126px;" id="divprofile">Change</button>
+            }
+        </div>
+        <div class="col-md-3">
+            @foreach (var m in Model.UserDetails)
+            {
+                <br />
+                <br />
+                <br />
+                <br />
+                <span>Welcome back</span>
+                <br />
+
+                <h3>@m.Firstname !</h3>
+
+            }
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-sm-12 table-dashbord">
+            <div class="table-dashbord-white">
+                <div class="table-head-part">
+                    <h2><i class="glyphicon glyphicon-user"></i> Profile Details</h2>
+                </div>
+                <div style="margin:10px !important;">
+                    <div>
+
+                        <div class="row">
+
+                            <div class="col-md-4">Name</div>
+                            <div class="col-md-4">Company</div>
+                            <div class="col-md-4">Title</div>
+
+
+                        </div>
+
+                        @foreach (var m in Model.UserDetails)
+                        {
+                            <div id="dv1" class="row" style="font-weight:bold;display:block">
+                                <div class="col-md-4">@m.Firstname @m.Lastname</div>
+                                <div class="col-md-4">@m.CompanyName</div>
+                                <div class="col-md-4">--</div>
+                            </div>
+                            <div id="dv2" class="row" style="font-weight:bold;display:none">
+                                <div class="col-md-4"><input type="text" id="txtstrName" class="form-control" value="@m.Firstname @m.Lastname" /></div>
+                                <div class="col-md-4"><input type="text" id="txtstrCompany" class="form-control" value="@m.CompanyName" /></div>
+                                <div class="col-md-4"><input type="text" id="txtstrTitle" class="form-control" value="" /></div>
+                            </div>
+                        }
+                        <div class="row">
+                            <div class="col-md-4">Phone</div>
+                            <div class="col-md-4">Email</div>
+                            <div class="col-md-4">Address</div>
+
+                        </div>
+                        @foreach (var m in Model.UserDetails)
+                        {
+                            <div id="dv3" class="row" style="font-weight:bold;display:block">
+                                <div class="col-md-4">@m.PhoneNumber</div>
+                                <div class="col-md-4">@m.Email</div>
+                                <div class="col-md-4"> @m.Address</div>
+                            </div>
+                            <div id="dv4" class="row" style="font-weight:bold;display:none">
+                                <div class="col-md-4"><input type="text" id="txtstrPhone" class="form-control" value="@m.PhoneNumber" /></div>
+                                <div class="col-md-4"><input type="text" id="txtstrEmail" class="form-control" value="@m.Email" /></div>
+                                <div class="col-md-4"><input type="text" id="txtstrAddress" class="form-control" value="@m.Address" /></div>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div id="dvedit" style="display:block;">
+                    <a href="#" id="btnedit" class="tble-viw">Edit</a>
+                </div>
+                <div id="dvsave" style="display:none;">
+                    <a href="#" id="btnsave" class="tble-viw aside-btn">Update</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 table-dashbord">
+            <div class="table-dashbord-white">
+
+                <div class="table-head-part">
+                    <h2><i class="glyphicon glyphicon-lock"></i> Password Reset</h2>
+                </div>
+                <div class="table-responsive">
+                    <table style="width:100% !important;border:none !important;padding:15px !important;">
+                        <tr style="border:none !important; padding:4px !important;">
+                            <td style="padding:4px !important;">Enter current password</td>
+                            <td style="padding:4px !important;">Create new password</td>
+                        </tr>
+                        <tr style="border:none !important;padding:4px !important;">
+                            <td style="padding:4px !important;"><input type="password" id="txtoldpwd" class="form-control" placeholder="Current password" /></td>
+                            <td style="padding:4px !important;"><input type="password" id="txtnewpwd" class="form-control" placeholder="New password" /></td>
+                        </tr>
+                        <tr style="border:none !important;padding:4px !important;">
+                            <td style="padding:4px !important;"><input type="text" class="form-control" placeholder="Re-enter new password" style="display:none;" /></td>
+                            <td style="padding:4px !important;"><input type="password" class="form-control" id="txtconfpwd" placeholder="Re-enter new password" /></td>
+                        </tr>
+                    </table>
+                </div>
+                <br />
+                <br />
+                <a href="#" class="tble-viw aside-btn" id="btnResetPwd">Reset</a>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 table-dashbord">
+            <div class="table-dashbord-white">
+                <div class="table-head-part">
+                    <h2><i class="glyphicon glyphicon-shopping-cart"></i> Payment Option</h2>
+                </div>
+                <div>
+                    <div style="margin:10px !important;">
+
+
+                        <div class="row" style="font-weight:bold !important;">
+                            <div class="col-md-1">Type</div>
+                            <div class="col-md-3">Card No</div>
+                            <div class="col-md-2">Name on Card</div>
+                            <div class="col-md-2">Expiary</div>
+                            <div class="col-md-2">Zip Code</div>
+                            <div class="col-md-2">Action</div>
+                        </div>
+
+
+                        @foreach (var m in Model.CarDetails)
+                        {
+                            <div class="row">
+                                <div class="col-md-1">-</div>
+                                <div class="col-md-3">@m.CardNumber</div>
+                                <div class="col-md-2">@m.NameOnCard</div>
+                                <div class="col-md-2">@m.ExpMonthYear</div>
+                                <div class="col-md-2">@m.Zip</div>
+                                <div class="col-md-2"><a href="#" carditem="@m.Id" class="btn_delete" style="color:red !important;" >Remove</a></div>
+
+                            </div>
+                        }
+                        <div id="dvpayment" style="font-weight:bold !important;display:none">
+                            <hr />
+                            <div class="row">
+
+
+                                <div class="col-md-3">Card No</div>
+                                <div class="col-md-3">Name on Card</div>
+                                <div class="col-md-3">Expiary</div>
+                                <div class="col-md-3">Zip Code</div>
+
+
+                            </div>
+                            <div class="row">
+
+                                <div class="col-md-3"><input type="text" id="txt_cardno" placeholder="0000-0000-0000-0000" class="form-control bg-danger" /></div>
+                                <div class="col-md-3"><input type="text" id="txt_name" placeholder="Name on Card.." class="form-control" /></div>
+                                <div class="col-md-3"><input type="text" id="txt_expiary" placeholder="MM/YYYY" class="form-control" /></div>
+                                <div class="col-md-3"><input type="text" id="txt_zipcode" placeholder="00000" class="form-control" /></div>
+
+                            </div>
+                            <br />
+
+                            <a  class="tble-viw aside-btn" id="btnsavepayment">Save</a>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div id="dv_btnn" style="display:block;">
+                    <a class="tble-viw" id="btnaddpayment">Add new payment type</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 table-dashbord">
+            <div class="table-dashbord-white">
+                <div class="table-head-part">
+                    <h2><i class="glyphicon glyphicon-user"></i> Team Members</h2>
+                </div>
+                <div class="table-responsive">
+                    <br />
+                    @foreach (var m in Model.TeamDetails)
+                    {
+                        <div class="col-md-3">
+                            <img src="data:image;base64,@System.Convert.ToBase64String(m.Photo)" class="img-circle" height="100" width="100" />
+                            <br />
+                            <span class="text-center">@m.strname</span>
+                        </div>
+                    }
+
+                    <div class="col-md-3 text-center">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="border-radius:50% !important; height:100px !important;width:100px !important;">
+                            <i class="glyphicon glyphicon-plus"></i>
+                        </button>
+                        <br />
+                        <span class="text-center">add new</span>
+                    </div>
+                </div>
+
+                    @*<a href="#" class="tble-viw">Add New</a>*@
+                </div>
+        </div>
+    </div>
+</div>
+<!-- The Modal -->
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Add team member</h4>
+               
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                @using (Ajax.BeginForm("Addteame", "Home", new AjaxOptions { OnBegin = "OnBegin1", OnSuccess = "OnSuccess1", OnFailure = "OnFailure1", OnComplete = "OnComplete1" }, new {  enctype = "multipart/form-data" }))
+            {
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input type="text" name="strname" class="form-control" placeholder="Name..." />
+                        </div>
+                    </div>
+                    <br />
+                        <div class="row">
+                            <div class="col-md-12"><input type="file" name="fupload" class="form-control"  /></div>
+                        </div>
+
+                        <br />
+                        <button class="btn btn-primary btn-sm text-center" type="submit" style="width:126px;">Save</button>
+                        }
+                    </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section footer
+{
+    <script src="~/Content/jquery-mask/jquery.mask.js"></script>
+
+
+    <script>
+        var funBegin = "";
+        var funSuccess = "";
+        var funFailure = "";
+        var funComplete = "";
+
+        var funBegin1 = "";
+        var funSuccess1 = "";
+        var funFailure1 = "";
+        var funComplete1 = "";
+
+        $(document).ready(function () {
+
+            var JsOnBegin = function () {
+
+               }
+            funBegin1 = JsOnBegin;
+            var JsOnSuccess = function () {
+                $('#myModal').modal('hide');
+               
+                    swal({
+                        title: "Success!",
+                        text: "Team member has been added successfully.",
+                        type: "success",
+                        showCancelButton: false,
+                        confirmButtonColor: "#337ab7",
+                        confirmButtonText: "OK",
+                        closeOnConfirm: false,
+                        closeOnCancel: false
+                    }, function (isConfirm) {
+                        var url = '@Url.Action("Accounts","Home")';
+                        window.location.href = url;
+                    });
+              
+            }
+            funSuccess1 = JsOnSuccess;
+            var JsOnFailure = function () {
+
+            }
+            funFailure1 = JsOnFailure;
+            var JsOnComplete = function () {
+
+            }
+            funComplete1 = JsOnComplete;
+
+          
+
+            $(document).on("click", ".btn_delete", function () {
+                var carditem = $(this).attr('carditem');
+                swal({
+                    title: "Are you sure?",
+                    text: "To Delete this card details!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-primary",
+                    confirmButtonText: "Yes, Delete this!",
+                    showLoaderOnConfirm: false,
+                    closeOnConfirm: false
+                }, function () {
+                    $.ajax({
+                        type: "POST",
+                        async: false,
+                        url: '@Url.Action("DeleteCard", "Home")',
+                        data: '{ "carditem":"' + carditem + '"}',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (response) {
+                            if(response=="success")
+                            {
+                                swal({
+                                    title: "Success!",
+                                    text: "Payment card detail has been deleted successfully!",
+                                    type: "success",
+                                    showCancelButton: false,
+                                    confirmButtonColor: "#337ab7",
+                                    confirmButtonText: "OK",
+                                    closeOnConfirm: false,
+                                    closeOnCancel: false
+                                }, function (isConfirm) {
+                                    var url = '@Url.Action("Accounts","Home")';
+                                    window.location.href = url;
+                                });
+                            }
+                            else if (response == "Invalid") {
+                                swal({
+                                    title: "Info!",
+                                    text: "Please fill fields!",
+                                    type: "info",
+                                    confirmButtonText: "Ok"
+                                });
+                            }
+                            else if (response == "error") {
+                                swal({
+                                    title: "Error!",
+                                    text: "Some technical error, Try after some time!",
+                                    type: "error",
+                                    confirmButtonText: "Ok"
+                                });
+                            }
+                               
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        },
+                        complete: function (response) {
+
+                            // tableajax();
+                        }
+
+                    });
+                });
+            });
+
+
+
+        
+
+            $(document).ready(function () {
+                $('#txt_cardno').mask('0000-0000-0000-0000');
+                $('#txt_zipcode').mask('00000');
+                $('#txt_expiary').mask('00/0000');
+            });
+
+
+            $("#divprofile").click(function () {
+                $("#profilephoto").trigger('click');
+            });
+            $("#profilephoto").change(function () {
+                $("#formphoto").submit();
+            });
+
+            var onBeginfun = function (response) {
+                $("#divprofile").html('<i class="fa fa-spin fa-refresh"></i>');
+                $("#divprofile").prop('disabled', true);
+            }
+            funBegin = onBeginfun;
+
+            var onSuccessfun = function (response) {
+                $.get("@Url.Action("GetProfilePhoto", "Home")", null, function (data) {
+                    $("#imgprofile").attr("src", "@Url.Action("GetProfilePhoto", "Home")");
+                });
+            }
+            funSuccess = onSuccessfun;
+
+            var onFailurefun = function (response) {
+
+            }
+            funFailure = onFailurefun;
+
+            var onCompletefun = function (response) {
+                $("#divprofile").html('Change');
+                $("#divprofile").prop('disabled', false);
+            }
+            funComplete = onCompletefun;
+        });
+
+        function OnBegin(response) {
+            funBegin(response);
+        }
+        function OnSuccess(response) {
+            funSuccess(response);
+        }
+        function OnFailure(response) {
+            funFailure(response);
+        }
+        function OnComplete(response) {
+            funComplete(response);
+        }
+
+        $(document).ready(function () {
+            $("#btnedit").click(function () {
+                $("#dv1").css("display", "none")
+                $("#dv2").css("display", "block")
+                $("#dv3").css("display", "none")
+                $("#dv4").css("display", "block")
+                $("#dvedit").css("display", "none")
+                $("#dvsave").css("display", "block")
+
+            });
+            $("#btnsave").click(function () {
+                var strName = $("#txtstrName").val();
+                var strCompany = $("#txtstrCompany").val();
+                var strTitle = $("#txtstrTitle").val();
+                var strPhone = $("#txtstrPhone").val();
+                var strEmail = $("#txtstrEmail").val();
+                var strAddress = $("#txtstrAddress").val();
+
+                swal({
+                    title: "Are you sure?",
+                    text: "To Update Profile",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-primary",
+                    confirmButtonText: "Yes, Update this!",
+                    showLoaderOnConfirm: true,
+                    closeOnConfirm: false
+                }, function () {
+
+                    $.ajax({
+                        type: "POST",
+                        async: true,
+                        url: '@Url.Action("UpdateProfile", "Home")',
+                        data: '{ "strName":"' + strName + '","strCompany":"' + strCompany + '","strTitle":"' + strTitle + '","strPhone":"' + strPhone + '","strEmail":"' + strEmail + '", "strAddress":"' + strAddress + '"}',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (response) {
+
+                            if (response == "success") {
+                                //swal({
+                                //    title: "Success!",
+                                //    text: "Profile has been updated!",
+                                //    type: "success",
+                                //    confirmButtonText: "Ok"
+                                //});
+                                swal({
+                                    title: "Success!",
+                                    text: "Profile has been updated.",
+                                    type: "success",
+                                    showCancelButton: false,
+                                    confirmButtonColor: "#337ab7",
+                                    confirmButtonText: "OK",
+                                    closeOnConfirm: false,
+                                    closeOnCancel: false
+                                }, function (isConfirm) {
+                                    var url = '@Url.Action("Accounts","Home")';
+                                    window.location.href = url;
+                                });
+                            }
+
+
+                            else if (response == "error") {
+                                swal({
+                                    title: "Error!",
+                                    text: "Some technical error, Try after some time!",
+                                    type: "error",
+                                    confirmButtonText: "Ok"
+                                });
+                            }
+                        },
+                        failure: function (response) {
+
+                        },
+                        error: function (response) {
+
+                        },
+                        complete: function () {
+                            $("#dv1").css("display", "block")
+                            $("#dv2").css("display", "none")
+                            $("#dv3").css("display", "block")
+                            $("#dv4").css("display", "none")
+                            $("#dvedit").css("display", "block")
+                            $("#dvsave").css("display", "none")
+                        }
+                    });
+                });
+
+
+
+
+            });
+            $("#btnResetPwd").click(function () {
+                var strOldPwd = $("#txtoldpwd").val();
+                var strNewPwd = $("#txtnewpwd").val();
+                var strConfPwd = $("#txtconfpwd").val();
+
+                swal({
+                    title: "Are you sure?",
+                    text: "To Rest Password",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-primary",
+                    confirmButtonText: "Yes, Reset Password!",
+                    showLoaderOnConfirm: true,
+                    closeOnConfirm: false
+                }, function () {
+                    $.ajax({
+                        type: "POST",
+                        async: true,
+                        url: '@Url.Action("ResetPassword", "Home")',
+                        data: '{ "strOldPwd":"' + encodeURI(strOldPwd) + '","strNewpwd":"' + encodeURI(strNewPwd) + '", "strConfpwd":"' + encodeURI(strConfPwd) + '"}',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (response) {
+                            if (response == "success") {
+                                //swal({
+                                //    title: "Success!",
+                                //    text: "Password has been changed successfully!",
+                                //    type: "success",
+                                //    confirmButtonText: "Ok"
+                                //});
+                                swal({
+                                    title: "Success!",
+                                    text: "Password has been changed successfully!",
+                                    type: "success",
+                                    showCancelButton: false,
+                                    confirmButtonColor: "#337ab7",
+                                    confirmButtonText: "OK",
+                                    closeOnConfirm: false,
+                                    closeOnCancel: false
+                                }, function (isConfirm) {
+                                    var url = '@Url.Action("Accounts","Home")';
+                                    window.location.href = url;
+                                });
+                            }
+                            else if (response == "notmatch") {
+                                swal({
+                                    title: "Info!",
+                                    text: "Old password not correct!",
+                                    type: "info",
+                                    confirmButtonText: "Ok"
+                                });
+                            }
+                            else if (response == "Invalid") {
+                                swal({
+                                    title: "Info!",
+                                    text: "Password Can not be blank!",
+                                    type: "info",
+                                    confirmButtonText: "Ok"
+                                });
+                            }
+                            else if (response == "notmatchcon") {
+                                swal({
+                                    title: "Info!",
+                                    text: "Confirm Password not match!",
+                                    type: "info",
+                                    confirmButtonText: "Ok"
+                                });
+                            }
+                            else if (response == "error") {
+                                swal({
+                                    title: "Error!",
+                                    text: "Some technical error, Try after some time!",
+                                    type: "error",
+                                    confirmButtonText: "Ok"
+                                });
+                            }
+                        },
+                        failure: function (response) {
+
+                        },
+                        error: function (response) {
+
+                        },
+                        complete: function () {
+
+                        }
+                    });
+                });
+            });
+
+            $("#btnaddpayment").click(function () {
+                $("#dvpayment").css("display", "block");
+                $("#dv_btnn").css("display", "none");
+            });
+            $("#btnsavepayment").click(function () {
+                var strCardNo = $("#txt_cardno").val();
+                if (strCardNo == "")
+                {
+                    $("#txt_cardno").addClass("has-error");
+                }
+               
+                var strNameoncard = $("#txt_name").val();
+                var strExpiary = $("#txt_expiary").val();
+                var strZipcode = $("#txt_zipcode").val();
+                
+                $.ajax({
+                type: "POST",
+                async: true,
+                url: '@Url.Action("AddPyamentcard", "Home")',
+                    data: '{ "strCardNo":"' + encodeURI(strCardNo) + '","strNameoncard":"' + encodeURI(strNameoncard) + '", "strExpiary":"' + encodeURI(strExpiary) + '","strZipcode":"' + strZipcode + '"}',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    if (response == "success") {
+                       
+                        swal({
+                            title: "Success!",
+                            text: "Payment card detail has been added successfully!",
+                            type: "success",
+                            showCancelButton: false,
+                            confirmButtonColor: "#337ab7",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: false,
+                            closeOnCancel: false
+                        }, function (isConfirm) {
+                            var url = '@Url.Action("Accounts","Home")';
+                            window.location.href = url;
+                        });
+                    }
+                    else if (response == "Invalid") {
+                        swal({
+                            title: "Info!",
+                            text: "Please fill fields!",
+                            type: "info",
+                            confirmButtonText: "Ok"
+                        });
+                    }
+                    else if (response == "error") {
+                        swal({
+                            title: "Error!",
+                            text: "Some technical error, Try after some time!",
+                            type: "error",
+                            confirmButtonText: "Ok"
+                        });
+                    }
+                },
+                failure: function (response) {
+
+                },
+                error: function (response) {
+
+                },
+                complete: function () {
+                    $("#dvpayment").css("display", "none");
+                    $("#dv_btnn").css("display", "block");
+                }
+            });
+            });
+          
+        });
+        function OnBegin1() {
+            funBegin1();
+        }
+        function OnSuccess1(response) {
+            funSuccess1();
+
+            
+        }
+        function OnFailure1() {
+            funFailure1();
+        }
+        function OnComplete1() {
+            funComplete1();
+        }
+    </script>
+}

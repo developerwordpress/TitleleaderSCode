@@ -1,0 +1,56 @@
+﻿@model TitleLeader.Models.UserLoginModels.UserLogin
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Title Leader</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="~/Content/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="~/Content/css/style.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="login-page-full">
+        <div class="login-left-secttion">
+            <img src="~/Content/images/logo.png" class="logo-login">
+            @if (ViewBag.Error != null)
+            {
+                if (ViewBag.Error == "0")
+                {
+                    <div class="alert alert-danger">
+                        <strong>Error!</strong> Wrong userid and password.
+                    </div>
+                }
+            }
+            @using (Html.BeginForm("Login", "Home", FormMethod.Post, new { @autocomplete = "off" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationMessageFor(m => m.Username)
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                    @Html.TextBoxFor(m => m.Username, new { @class = "form-control", @placeholder = "Username", @required = "required" })
+                </div>
+                @Html.ValidationMessageFor(m => m.Password)
+                <div class="input-group" style="position:relative;">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password", @required = "required" })
+                    <span class="forgot-text"><a href="#">Forgot?</a></span>
+                </div>
+                <br>
+                <button type="submit" class="login-btn"> Sign IN</button>
+            }
+            <span class="sign-new-accnt"><a href="@Url.Action("Registration1","Home")">Create an account <i class="fa fa-angle-right" aria-hidden="true"></i></a></span>
+            <div class="login-botm"><p>By logging in you agree to our <a href="@Url.Action("Termsandcondition","Home")" target="_blank">privacy policy & terms of service</a></p><span>@@ 2018 Title Leader</span></div>
+        </div>
+        <div class="dashbored-right-section">
+        </div>
+    </div>
+
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/modernizr-2.6.2.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Content/sweetalert/sweetalert.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+.progress-bar1 {
+  position: relative;
+  height: 200px;
+  width: 200px;
+  display: inline-block;
+  float: left;
+  background-color: #fff;
+  box-shadow: none; 
+  margin-left: 60px; 
+}
+
+.progress-bar1 div {
+  position: absolute;
+  height: 200px;
+  width: 200px;
+  border-radius: 50%;
+}
+
+.progress-bar1 div span {
+  position: absolute;
+  font-family: Arial;
+  font-size: 25px;
+  line-height: 175px;
+  height: 175px;
+  width: 175px;
+  left: 12.5px;
+  top: 12.5px;
+  text-align: center;
+  border-radius: 50%;
+  background-color: white;
+  color: #56667e; 
+}
+
+.progress-bar1 .background { background-color: #b3cef6; }
+
+.progress-bar1 .rotate {
+  clip: rect(0 100px 200px 0);
+  background-color: #4b86db;
+}
+
+.progress-bar1 .left {
+  clip: rect(0 100px 200px 0);
+  opacity: 1;
+  background-color: #b3cef6;
+}
+
+.progress-bar1 .right {
+  clip: rect(0 100px 200px 0);
+  transform: rotate(180deg);
+  opacity: 0;
+  background-color: #4b86db;
+}
+ @keyframes 
+toggle {  0% {
+ opacity: 0;
+}
+ 100% {
+ opacity: 1;
+}
+}
+.cmp_day {
+	top: 54px;
+    z-index: 1;
+    /* left: 42px; */
+    color: #90a1ba;
+    font-size: 14px;
+	font-weight: 600;	
+}
+.cmp_days_left {
+	/* left: 35px; */
+    color: #56667e;
+}
+.per_inner {
+	font-weight: 600;
+    top: 126px;
+    left: 25px;
+    color: #2859e5;
+    font-size: 14px;
+}
+.prog-bar-right {
+    position: relative;
+    left: 30px;
+    top: 10px;
+    text-align: left;
+}
+.within_days span {
+    font-size: 14px;
+    color: #9faec3;
+	font-weight: 600;
+}
+span.withindays_span {
+    color: #56667e;
+    font-size: 22px;
+    font-weight: 600;	
+}
+sub.withindays_span_sub {
+    color: #2859e5;
+    font-size: 14px;
+}
+.within_days {
+    margin-bottom: 14px;
+}
+span.main-prog {
+    top: 104px !important;
+    left: 68px !important;
+    height: auto !important;
+    width: auto !important;
+    line-height: 20px !important;
+    font-size: 38px !important;
+}

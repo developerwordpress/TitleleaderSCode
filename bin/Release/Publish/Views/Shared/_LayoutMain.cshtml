@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Title Leader</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="~/Content/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="~/Content/sweetalert/sweetalert.css" rel="stylesheet" />
+    <link href="~/Content/datatables/dataTables.bootstrap.min.css" rel="stylesheet" />
+    @*<link href="~/Content/datatables/buttons.dataTables.min.css" rel="stylesheet" />*@
+    <link href="~/Content/datatables/buttons.bootstrap.min.css" rel="stylesheet" />
+    @*<link href="~/Content/datatables/responsive.bootstrap4.min.css" rel="stylesheet" />*@
+    <link href="~/Content/datatables/responsive.bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/css/style.css" rel="stylesheet" />
+    @RenderSection("header", false)
+</head>
+<body class="gray-bg">
+    <div class="pages">
+
+        <div class="left-asside-bar">
+            <img src="~/Content/images/white-logo.png" class="logo-login">
+            <a href="@Url.Action("Manualuploads", "Site")" class="aside-btn">Place New Order</a>
+            <ul class="aside-navbar">
+                <li><a href="@Url.Action("Index", "Home")"><img class="fa-icon" src="~/Content/images/icon-1.png">Dashboard</a></li>
+                <li><a href="@Url.Action("OpenOrders", "Site")"><img class="fa-icon" src="~/Content/images/icon-2.png">Open Orders</a></li>
+                <li><a href="@Url.Action("ActionRequired", "Site")"><img class="fa-icon" src="~/Content/images/icon-3.png">Action Required</a></li>
+                <li><a href="@Url.Action("CompleteOrder", "Site")"><img class="fa-icon" src="~/Content/images/icon-4.png">Completed Orders</a></li>
+                <li><a href="@Url.Action("SaveForLater", "Site")"><img class="fa-icon" src="~/Content/images/icon-5.png">Saved for later</a></li>
+                <li><a href="@Url.Action("Invoice","Site")"><img class="fa-icon" src="~/Content/images/icon-6.png">Invoices</a></li>
+                
+            </ul>
+
+        </div>
+        <div class="right-padding-200">
+            <div class="right-dark-gray">
+                <div class="top-nav">
+                    <div class="left-top-icon">
+                        @{Html.RenderAction("GetUserDetails", "Home"); }
+                        <a href="@Url.Action("Accounts","Home")"><i class="fa fa-cog"></i></a>
+                        @{ Html.RenderAction("NotificationCompleteOrder", "Site");}
+                        <a href="@Url.Action("Logout","Home")"><i class="fa fa-sign-out"></i></a>
+                    </div>
+                    <a href="#" class="contact-top-btn"><span>Customer Service</span><span>(800) 123-4567</span></a>
+                </div>
+                @RenderBody()
+
+                <footer class="footer-text">
+                    <div class="col-sm-6">
+                        <div class="footer-left">
+                            <img class="fa-icon-img" src="~/Content/images/logo-text.png">
+                            <div class="footer-contct">
+                                <span>Customer Service</span><span><a href="#">(800) 123-4567</a></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="footer-right">
+                            <ul class="download-text-list">
+                                <li><a href="#">Contact Us </a></li>
+                                <li> |</li>
+                                <li><a href="@Url.Action("Termsandcondition","Home")" target="_blank"> Privacy Policy </a></li>
+                                <li> |</li>
+                                <li><a href="@Url.Action("Termsandcondition","Home")" target="_blank"> Term of Service</a></li>
+                            </ul>
+                            <span>@@ 2018 Title Leader</span>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/modernizr-2.6.2.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/Content/sweetalert/sweetalert.min.js"></script>
+    <script src="~/Scripts/jquery.simplePagination.js"></script>
+    <script src="~/Scripts/imtech_pager.js"></script>
+    @RenderSection("footer", false)
+</body>
+</html>

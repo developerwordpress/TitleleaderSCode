@@ -1,0 +1,84 @@
+﻿@model TitleLeader.Models.OrderItemEdit.OrderItemInfo
+
+@using (Ajax.BeginForm("EditSaveForLatter", "Site", new AjaxOptions { HttpMethod = "POST", OnBegin = "OnBegin", OnFailure = "OnFailure", OnComplete = "OnComplete", OnSuccess = "OnSuccess" }, new { }))
+{
+    @Html.HiddenFor(m => m.OrderNo)
+    @Html.HiddenFor(m => m.ItemNo)
+    <div class="modal-content">
+        <div class="modal-header bg-primary">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title"><i class="glyphicon glyphicon-pencil"></i> Update</h4>
+        </div>
+        <div class="modal-body">
+            <h5 class="text-center">Property address</h5>
+            <div class="row">
+                <div class="col-md-3">House Number</div>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(m => m.HouseNumber, new { @class = "form-control", @placeholder = "House Number" })
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-3">Unit #</div>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(m => m.Unit, new { @class = "form-control", @placeholder = "Unit #" })
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-3">Street Name</div>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(m => m.StreetName, new { @class = "form-control", @placeholder = "Street Name" })
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-3">City</div>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(m => m.City, new { @class = "form-control", @placeholder = "City" })
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-3">State</div>
+                <div class="col-md-9">
+                    @Html.DropDownListFor(m => m.State, (IEnumerable<SelectListItem>)ViewBag.States, "Select State", new { @class = "form-control", @required = "required" })
+                    @Html.ValidationMessageFor(m => m.State)
+                </div>
+            </div>
+             <br />
+            <div class="row">
+                <div class="col-md-3">County</div>
+                <div class="col-md-9">
+                    @Html.DropDownListFor(m => m.county, (IEnumerable<SelectListItem>)ViewBag.County, "Select State", new { @class = "form-control", @required = "required" })
+                    @Html.ValidationMessageFor(m => m.county)
+                </div>
+            </div> 
+            <br />
+            <div class="row">
+                <div class="col-md-3">Zip Code</div>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(m => m.ZipCode, new { @class = "form-control", @placeholder = "Zip Code" })
+                </div>
+            </div>
+            <h5 class="text-center">Owner(s)</h5>
+            <div class="row">
+                <div class="col-md-3">First Name</div>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", @placeholder = "First Name" })
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-3">Last Name</div>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", @placeholder = "Last Name" })
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Update</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+}

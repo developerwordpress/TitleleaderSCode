@@ -1,0 +1,38 @@
+﻿@model TitleLeader.Models.AskQuestion.AskQuestion
+
+@using (Ajax.BeginForm("AskQuestion", "Site", new AjaxOptions { HttpMethod = "POST", OnBegin = "OnBegin", OnFailure = "OnFailure", OnComplete = "OnComplete", OnSuccess = "OnSuccess" }, new { }))
+{
+    @Html.HiddenFor(m => m.OrderNo)
+    @Html.HiddenFor(m => m.ItemNo)
+    <div class="modal-content">
+        <div class="modal-header bg-primary">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title"><i class="glyphicon glyphicon-question-sign"></i> Ask an Question.</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-3">Order #</div>
+                <div class="col-md-3"><label>@Model.OrderNo</label></div>
+                <div class="col-md-3">Search #</div>
+                <div class="col-md-3"><label> @Model.ItemNo</label></div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12">Please ask your question!</div>
+                
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12">
+                    @Html.TextBoxFor(m => m.Question, new { @class = "form-control", @placeholder = "Question?" })
+                </div>
+            </div>
+           
+        </div>
+        
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Send</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+}

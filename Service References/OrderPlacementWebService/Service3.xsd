@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="https://www.fnas.com/OrderPlacementService/v2/Service.svc?xsd=xsd3" />
+  <xs:complexType name="OrderPlacementService.PropertyAddress">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:OrderPlacementService.Address">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="County" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="OrderPlacementService.PropertyAddress" nillable="true" type="tns:OrderPlacementService.PropertyAddress" />
+  <xs:complexType name="OrderPlacementService.Address">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AddressStreetInfo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="City" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LegalDescription" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ParcelID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ParcelID2" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ParcelID3" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ParcelID4" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Platted" nillable="true" type="ArrayOfPlattedProperty" />
+      <xs:element minOccurs="0" name="State" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="StreetDirection" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="StreetName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="StreetNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="StreetSuffix" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Unit" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Unplatted" nillable="true" type="ArrayOfUnplattedProperty" />
+      <xs:element minOccurs="0" name="Zip" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="OrderPlacementService.Address" nillable="true" type="tns:OrderPlacementService.Address" />
+  <xs:complexType name="OrderPlacementService.Partner">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Address" nillable="true" type="tns:OrderPlacementService.Address" />
+      <xs:element minOccurs="0" name="ContactName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PartnerTypeID" type="xs:int" />
+      <xs:element minOccurs="0" name="Phone" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ReferenceNumber" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="OrderPlacementService.Partner" nillable="true" type="tns:OrderPlacementService.Partner" />
+  <xs:complexType name="ArrayOfOrderPlacementService.BuyerSeller">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="OrderPlacementService.BuyerSeller" nillable="true" type="tns:OrderPlacementService.BuyerSeller" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfOrderPlacementService.BuyerSeller" nillable="true" type="tns:ArrayOfOrderPlacementService.BuyerSeller" />
+  <xs:complexType name="OrderPlacementService.BuyerSeller">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Address" nillable="true" type="tns:OrderPlacementService.Address" />
+      <xs:element minOccurs="0" name="Email" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FirstName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LastName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MaritalStatus" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MiddleName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Phone" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Prefix" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SSN" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Spouse" nillable="true" type="tns:OrderPlacementService.BuyerSeller" />
+      <xs:element minOccurs="0" name="Suffix" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="OrderPlacementService.BuyerSeller" nillable="true" type="tns:OrderPlacementService.BuyerSeller" />
+  <xs:complexType name="ArrayOfOrderPlacementService.Partner">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="OrderPlacementService.Partner" nillable="true" type="tns:OrderPlacementService.Partner" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfOrderPlacementService.Partner" nillable="true" type="tns:ArrayOfOrderPlacementService.Partner" />
+  <xs:complexType name="PlaceOrderResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AQUADecision" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ResWareFileID" type="xs:int" />
+      <xs:element minOccurs="0" name="ResWareFileNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Response" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ResponseCode" type="xs:int" />
+      <xs:element minOccurs="0" name="Timestamp" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PlaceOrderResponse" nillable="true" type="tns:PlaceOrderResponse" />
+</xs:schema>

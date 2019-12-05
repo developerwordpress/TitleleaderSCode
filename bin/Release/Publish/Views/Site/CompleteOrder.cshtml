@@ -1,0 +1,185 @@
+﻿@model List<TitleLeader.Models.Dataupload.OpenOrderModels>
+@{
+    /**/
+
+    ViewBag.Title = "Complete Order";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    Int32 fillteroption = ViewBag.FillterOption != null ? Convert.ToInt32(ViewBag.FillterOption) : 0;
+}
+<div class="padding-box">
+    <div class="open-cart-text-box complet-order">
+        <h3 class="haeding-text-gry"> Review completed orders.</h3>
+        <div class="row">
+            <div class="col-sm-6 text-srch">
+                @using (Html.BeginForm("OpenOrders", "Site", FormMethod.Post, new { @id = "form-search" }))
+                {
+                    <div class="input-group">
+                        <span class="input-group-addon" id="btn-search" style="cursor:pointer;"><i class="glyphicon glyphicon-search"></i></span>
+                        <input id="orderid" type="text" class="form-control" name="orderid" placeholder="Search Orders">
+                    </div>
+                }
+            </div>
+            <div class="col-sm-3 text-right">
+                <ul class="filter-box">
+                    <li>view</li>
+                    <li><a href="#"><i class="fa fa-th-large" aria-hidden="true"></i></a></li>
+                    <li><a href="#"><i class="fa fa-th-list" aria-hidden="true"></i></a></li>
+                </ul>
+            </div>
+            <div class="col-sm-3 text-right">
+                <select class="form-control" id="ddlFillter" name="fillter">
+                    @switch (fillteroption)
+                    {
+                        case 0:
+                            <option value="0" selected="selected">Date</option>
+                            <option value="1">Order Number</option>
+                            <option value="2">Betch Number</option>
+                            <option value="3">Customer Name</option>
+                            <option value="4">Address</option>
+                            break;
+                        case 1:
+                            <option value="0">Date</option>
+                            <option value="1" selected="selected">Order Number</option>
+                            <option value="2">Betch Number</option>
+                            <option value="3">Customer Name</option>
+                            <option value="4">Address</option>
+                            break;
+                        case 2:
+                            <option value="0">Date</option>
+                            <option value="1">Order Number</option>
+                            <option value="2" selected="selected">Betch Number</option>
+                            <option value="3">Customer Name</option>
+                            <option value="4">Address</option>
+                            break;
+                        case 3:
+                            <option value="0" selected="selected">Date</option>
+                            <option value="1">Order Number</option>
+                            <option value="2">Betch Number</option>
+                            <option value="3" selected="selected">Customer Name</option>
+                            <option value="4">Address</option>
+                            break;
+                        case 4:
+                            <option value="0" selected="selected">Date</option>
+                            <option value="1">Order Number</option>
+                            <option value="2">Betch Number</option>
+                            <option value="3">Customer Name</option>
+                            <option value="4" selected="selected">Address</option>
+                            break;
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="row" id="content">
+            @foreach (var m in Model)
+            {
+
+                <div class="col-sm-4 z">
+                    <div class="open-carts-box">
+                        <div class="heading-blue-box">
+                            <span>Order #</span>
+                            <h3>@m.OrderNo</h3>
+                        </div>
+                        <div class="box-10-padding">
+                            <div class="col-sm-6 box-part">
+                                <span>Date ordered</span>
+                                <span>@Convert.ToDateTime(m.OrderDate).ToString("MM-dd-yyyy")</span>
+                            </div>
+                            <div class="col-sm-6 box-part">
+                                <span>Total searches</span>
+                                <span>@m.Search</span>
+                            </div>
+                            <p>status</p>
+                            @{
+                                var per = (m.Search * 100) / 30;
+                            }
+                            <p class="progres-done">complete</p>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="@per"
+                                     aria-valuemin="0" aria-valuemax="100" style="width:@per%">
+                                    <span class="sr-only">@per% Complete</span>
+                                </div>
+                            </div>
+                            <div class="pfd-section-cart">
+                                <a href="@Url.Action("CompleteSearch", "Site", new { @ordno = @m.OrderNo }, null)">View searches </a>
+                                <a href="#" class="docs_name" order_no="@m.OrderNo"><i class="fa fa-file-pdf-o" aria-hidden="true"></i>Download PDF report </a>
+                                <a href="#"><i class="fa fa-usd" aria-hidden="true"></i>View Invoice </a>
+                                <a href="#"><i class="fa fa-print" aria-hidden="true"></i>Print</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="pagination" id="pagingControls">
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog" id="content_block">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><i class="glyphicon glyphicon-file"></i> Document List</h4>
+            </div>
+            <div class="modal-body">
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="divlink" divurl="@Url.Action("DownloadDocument","Site")">
+
+</div>
+
+@section footer
+{
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/modernizr-2.6.2.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+    <script>
+
+        var pager = new Imtech.Pager();
+        $(document).ready(function () {
+            $("#btn-search").click(function () {
+                $("#form-search").submit();
+            });
+            pager.paragraphsPerPage = 5;
+            pager.pagingContainer = $('#content');
+            pager.paragraphs = $('div.z', pager.pagingContainer);
+            pager.showPage(1);
+
+            $(document).on('click', '.docs_name', function () {
+                var orderno = $(this).attr("order_no");
+                    $link = $(this);
+
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("Documentids", "Site")?orderno=' + orderno,
+                    success: function (result) {
+                        var list = '<ul class="list-group">';
+                        var link = $("#divlink").attr("divurl");
+                        $.each(result, function (key, val) {
+                            list += '<li class="list-group-item"><a target="_blank" href="' + link + '?docid=' + val.DocumentId + '&docname=' + encodeURI(val.DocumentName) + '">' + val.DocumentName + "</a></li>";
+                        });
+                        list += '</ul>';
+
+                        $("#myModal").find('.modal-body').html(list);
+                        $("#myModal").modal("show");
+                    }
+                });
+            })
+
+
+
+        });
+    </script>
+}

@@ -1,0 +1,601 @@
+﻿@model List<TitleLeader.Models.Dataupload.DatauploadSave>
+@{
+    ViewBag.Title = "Orderconfirm";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    WebGrid webGrid = new WebGrid(source: Model, canPage: false, canSort: false);
+}
+
+<div class="padding-box">
+    <div class="open-cart-text-box open-cart-text-box-reserch upload-confirmation-section">
+        <h3 class="haeding-text-gry"> Order Confirmation</h3>
+        <p>Please review these search orders for accuracy, then click submit.</p>
+        @if (Model.Count > 0)
+        {
+
+
+            <div class="row">
+                <div class="col-sm-8">
+                    <div class="top-table">
+                        <table class="table border">
+                            <thead>
+                                <tr>
+                                    <th>Order #</th>
+                                    <th>Order date</th>
+                                    <th># of Searches</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr>
+                                    <td id="ord-no">@Model.FirstOrDefault().order_no</td>
+                                    <td>@Model.FirstOrDefault().order_date.ToString("MM-dd-yyyy")</td>
+                                    <td>@ViewBag.OrderCount</td>
+                                    @*<td>@Model.FirstOrDefault().owner_first_name @Model.FirstOrDefault().owner_last_name</td>*@
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12 tble-btn">
+                    <a href="#" class="aside-btn submitorder" btn_type="1" id="btn-submit-all">Submit ALL</a>
+                    <a href="#" class="aside-btn submitorder" btn_type="2" id="btn-submit-chk">Submit checked</a>
+                    @*<a href="#" class="aside-btn-text red">Cancel  order</a>*@
+                    <input type="button" id="btnDelete" class="aside-btn-text red" value="Cancel Oder" />
+                    <span>|</span>
+                    <input type="button" id="btnSaveForLater" class="aside-btn-text blue" value="Save order for later" />
+
+                </div>
+            </div>
+            <div class="table-responsive table-responsive-no-before">
+                @if (ViewBag.msgdelete != "")
+                {
+                    <div class="alert alert-success alert-dismissible">
+                        <strong>Successfull!</strong> Order has been canceled.
+                    </div>
+                }
+            </div>
+            <div class="table-responsive">
+                <table class="table" id="table-order-con">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="checkbox">
+                                    <label><input type="checkbox" id="chk-select-header"></label>
+                                </div>
+                            </th>
+                            <th>Address</th>
+                            <th>Unit</th>
+                            <th>City</th>
+                            <th>State</th>
+                             <th>County</th>
+                            <th>Zip</th>
+                            <th>Country</th>
+                            <th>Owner</th>
+                            <th> &nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var ord in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="checkbox">
+                                        <label><input type="checkbox" class="chk-select"></label>
+                                    </div>
+                                </td>
+                                <td>@ord.house_no @ord.street_add</td>
+                                <td>@ord.house_unit </td>
+                                <td>@ord.city </td>
+                                <td>@ord.state </td>
+                                 <td>@ord.county </td>
+                                <td>@ord.zip_code </td>
+                                <td>-</td>
+                                <td>@ord.owner_first_name @ord.owner_last_name </td>
+                                <td><a type="button" style="cursor:pointer" data-container="body" data-toggle="popover" data-html="true" data-placement="top" data-content='<ul class="nav"><li><a href="#" orderid="@ord.order_no" itemid="@ord.item_no" class="btn_edit"><i class="fa fa-pencil"></i> Eidt</li><li><a href="#" orderid="@ord.order_no" itemid="@ord.item_no" class="btn_edit"><i class="fa fa-floppy-o"></i> Save for Later</li><li><a href="#" orderid="@ord.order_no" itemid="@ord.item_no" class="btn_delete"><i class="fa fa-times text-danger"></i> Delete</li></ul>'><img class="img-icon" src="~/Content/images/dots.png"></a></td>
+                                <td class="item-no" style="display:none;">@ord.item_no</td>
+                            </tr>
+                        }
+                        <tr class="without-bg">
+                            <td colspan="9" style='background-color:#e4e7f2 !important;'></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="row">
+                <div class="col-sm-6 tble-btn">
+                    @*<a href="#" class="aside-btn">Submit Order</a>
+                        <a href="#" class="aside-btn-text red">Cancel  order</a>*@
+                </div>
+                <div class="col-sm-6">
+                    <div class="pagination">
+                        <a href="#">&laquo;</a>
+                        <a href="#"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
+                        <a href="#">1</a>
+                        <a href="#">2</a>
+                        <a href="#">3</a>
+                        <a href="#">4</a>
+                        <a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
+                        <a href="#">&raquo;</a>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-danger">
+                <strong>Data Not found!</strong>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="modal" id="myModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Properties List</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="table-responsive" id="placeholder">
+
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal1" role="dialog">
+    <div class="modal-dialog" id="content_block">
+
+    </div>
+</div>
+
+@section footer
+{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('[data-toggle="popover"]').popover();
+            $("#chk-select-header").change(function () {
+                var headcheck = $(this).is(":checked");
+                $('#table-order-con>tbody>tr').each(function (i, n) {
+                    $(this).find('td:eq(0)').find(".chk-select").prop('checked', headcheck);
+                });
+            });
+            /*================Save for Later=================*/
+            $("#btnSaveForLater").click(function () {
+                swal({
+                    title: "Are you sure?",
+                    text: "To save order as draft!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-primary",
+                    confirmButtonText: "Yes, Save as draft!",
+                    showLoaderOnConfirm: true,
+                    closeOnConfirm: false
+                }, function () {
+                    var intArray = new Array();
+                    var count = 0;
+                    $('#table-order-con>tbody>tr').each(function (i, n) {
+                        var checktrue = $(this).find('td:eq(0)').find(".chk-select").is(":checked");
+                        if (checktrue) {
+                            intArray[count] = $(this).find('td:eq(9)').text();
+                            count++;
+                        }
+                    });
+                    if (intArray.length > 0) {
+                        $("#btnSaveForLater").attr("disabled", "disabled");
+                        $("#btnSaveForLater").val("Please wait..");
+                        $.ajax({
+                            type: "POST",
+                            async: true,
+                            url: '@Url.Action("SaveforLatterUpdate", "Site")',
+                            data: '{ "OrderItemNos":' + JSON.stringify(intArray) + '}',
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: function (response) {
+                                if (response != "error") {
+                                    swal({
+                                        title: "Success!",
+                                        text: "Order has been saved as draft.",
+                                        type: "success",
+                                        showCancelButton: false,
+                                        confirmButtonColor: "#337ab7",
+                                        confirmButtonText: "OK",
+                                        closeOnConfirm: false,
+                                        closeOnCancel: false
+                                    }, function (isConfirm) {
+                                        if (parseInt(response["count"]) > 0) {
+                                            var url = '@Url.Action("Orderconfirm", "Site")?' + 'ordno=' + response["orderno"];
+                                            window.location.href = url;
+                                        }
+                                        else {
+                                            var url = '@Url.Action("SaveForLater", "Site")';
+                                            window.location.href = url;
+                                        }
+                                    });
+                                    @*{
+                                        var url = '@Url.Action("Orderconfirm", "Site")?' + 'ordno=' + response;
+                                        window.location.href = url;
+                                    });*@
+                                }
+                            },
+                            failure: function (response) {
+                                swal({
+                                    title: "Error!",
+                                    text: "Your session has been expiry please login.",
+                                    type: "error",
+                                    showCancelButton: false,
+                                    confirmButtonColor: "#337ab7",
+                                    confirmButtonText: "OK",
+                                    closeOnConfirm: false,
+                                    closeOnCancel: false
+                                }, function (isConfirm) {
+                                    var url = '@Url.Action("Login", "Home")';
+                                    window.location.href = url;
+                                });
+                            },
+                            error: function (response) {
+                                swal({
+                                    title: "Error!",
+                                    text: "Your session has been expiry please login.",
+                                    type: "error",
+                                    showCancelButton: false,
+                                    confirmButtonColor: "#337ab7",
+                                    confirmButtonText: "OK",
+                                    closeOnConfirm: false,
+                                    closeOnCancel: false
+                                }, function (isConfirm) {
+                                    var url = '@Url.Action("Login", "Home")';
+                                    window.location.href = url;
+                                });
+                            },
+                            complete: function () {
+                                $("#btnSaveForLater").removeAttr("disabled");
+                                $("#btnSaveForLater").val("Save order for later");
+                            }
+                        });
+                    }
+                });
+            });
+            /*================Save for Later End=============*/
+
+            /*================Cancel Searched=================*/
+            $("#btnDelete").click(function () {
+                swal({
+                    title: "Are you sure?",
+                    text: "Want to cancel orders!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "Yes, cancel it!",
+                    showLoaderOnConfirm: true,
+                    closeOnConfirm: false
+                }, function () {
+                    var intArray = new Array();
+                    var count = 0;
+                    $('#table-order-con>tbody>tr').each(function (i, n) {
+                        var checktrue = $(this).find('td:eq(0)').find(".chk-select").is(":checked");
+                        if (checktrue) {
+                            intArray[count] = $(this).find('td:eq(9)').text();
+                            count++;
+                        }
+                    });
+                    if (intArray.length > 0) {
+                        $("#btnDelete").attr("disabled", "disabled");
+                        $("#btnDelete").val("Deleting..");
+                        $.ajax({
+                            type: "POST",
+                            async: true,
+                            url: '@Url.Action("DeleteOrderItem", "Site")',
+                            data: '{ "OrderItemNos":' + JSON.stringify(intArray) + '}',
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: function (response) {
+                                //alert(JSON.stringify(response));
+                                //alert()
+                                if (response != "error") {
+                                    swal({
+                                        title: "Success!",
+                                        text: "Order has been canceled",
+                                        type: "success",
+                                        showCancelButton: false,
+                                        confirmButtonColor: "#337ab7",
+                                        confirmButtonText: "OK",
+                                        closeOnConfirm: false,
+                                        closeOnCancel: false
+                                    }, function (isConfirm) {
+                                        if (parseInt(response["count"]) > 0) {
+                                            var url = '@Url.Action("Orderconfirm", "Site")?' + 'ordno=' + response["orderno"];
+                                            window.location.href = url;
+                                        }
+                                        else {
+                                            var url = '@Url.Action("Manualuploads", "Site")';
+                                            window.location.href = url;
+                                        }
+                                    });
+                                }
+                            },
+                            failure: function (response) {
+                                swal({
+                                    title: "Error!",
+                                    text: "Your session has been expiry please login.",
+                                    type: "error",
+                                    showCancelButton: false,
+                                    confirmButtonColor: "#337ab7",
+                                    confirmButtonText: "OK",
+                                    closeOnConfirm: false,
+                                    closeOnCancel: false
+                                }, function (isConfirm) {
+                                    var url = '@Url.Action("Login", "Home")';
+                                    window.location.href = url;
+                                });
+                            },
+                            error: function (response) {
+                                swal({
+                                    title: "Error!",
+                                    text: "Your session has been expiry please login.",
+                                    type: "error",
+                                    showCancelButton: false,
+                                    confirmButtonColor: "#337ab7",
+                                    confirmButtonText: "OK",
+                                    closeOnConfirm: false,
+                                    closeOnCancel: false
+                                }, function (isConfirm) {
+                                    var url = '@Url.Action("Login", "Home")';
+                                    window.location.href = url;
+                                });
+                            },
+                            complete: function () {
+                                $("#btnDelete").removeAttr("disabled");
+                                $("#btnDelete").val("Cancel Oder");
+                            }
+                        });
+                    }
+                });
+            });
+            /*================End Cancel Searched=================*/
+            $(".submitorder").click(function () {
+                var btn_type = $(this).attr("btn_type");
+                $(".submitorder").html("Submiting..");
+                $(".submitorder").prop("disabled", true);
+                if (btn_type == "1") {
+                    //alert();
+                    $('#table-order-con>tbody>tr').each(function (i, n) {
+                        $(this).find('td:eq(0)').find(".chk-select").prop('checked', true);
+                    });
+                } else {
+                    var result = "no";
+                    $('#table-order-con>tbody>tr').each(function (i, n) {
+                        var checktrue = $(this).find('td:eq(0)').find(".chk-select").is(":checked");
+                        if (checktrue) {
+                            result = "yes";
+                        }
+                    });
+                    if (result == "no") {
+                        swal({
+                            title: "Please Select!",
+                            text: "Please select atlest one property",
+                            type: "error",
+                            showCancelButton: false,
+                            confirmButtonColor: "#337ab7",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: false,
+                            closeOnCancel: false
+                        });
+                        return;
+                    }
+                }
+
+
+                var intArray = [];
+                //var count = 0;
+                $('#table-order-con>tbody>tr').each(function (i, n) {
+                    var checktrue = $(this).find('td:eq(0)').find(".chk-select").is(":checked");
+                    if (checktrue) {
+                        intArray.push($(this).find('td:eq(10)').text());
+                        //count++;
+                    }
+                });
+                //alert(JSON.stringify(intArray));
+
+                $.ajax({
+                    type: "POST",
+                    async: true,
+                    url: '@Url.Action("PlaceOrders", "Site")',
+                    data: { 'orderno': $("#ord-no").text().trim(), 'items': intArray },
+                    success: function (response) {
+                        $("#placeholder").html(response);
+                        $("#myModal").show();
+                    },
+                    error: function (response) {
+                        alert(JSON.stringify(response));
+                    },
+                    complete: function (response) {
+                        $(".submitorder").prop("disabled", false);
+                        $(".submitorder").html("Submit ALL");
+                        $(".submitorder").html("Submit checked");
+                    }
+                });
+            });
+
+            $(".close").click(function () {
+                var url = '@Url.Action("ActionRequired", "Site")';
+                window.location.href = url;
+            });
+
+            $(document).on("click", ".btn_edit", function () {
+                var order_no = $(this).attr("orderid");
+                var item_no = $(this).attr("itemid");
+                SaveForLetterFun(order_no, item_no);
+                $("#myModal1").modal({
+                    show: true,
+                    backdrop: 'static',
+                    keyboard: false
+                });
+            });
+
+            var SaveForLetterFun = function (order_no, item_no) {
+                $.ajax({
+                    type: "GET",
+                    async: false,
+                    url: '@Url.Action("EditSaveForLatter", "Site")',
+                    data: { orderno: '' + order_no + '', itemno: '' + item_no + '' },
+                    contentType: "application/html; charset=utf-8",
+                    dataType: "html",
+                    success: function (response) {
+                        $("#content_block").html(response);
+                        $.validator.unobtrusive.parse($("#content_block"));
+                    },
+                    failure: function (response) {
+                        alert("Error in Personal");
+                    },
+                    error: function (response) {
+                        alert("Error in Personal");
+                    },
+                    complete: function (response) {
+
+                    }
+                });
+            }
+
+
+            $(document).on('click', '.btn_delete', function () {
+                var order_no = $(this).attr("orderid");
+                var item_no = $(this).attr("itemid");
+                var intArray = [];
+                intArray.push(item_no);
+                funDelete(order_no, intArray);
+            });
+
+            var funDelete = function (orderno, itenos) {
+                swal({
+                    title: "Are you sure?",
+                    text: "Want to cancel orders!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "Yes, cancel it!",
+                    showLoaderOnConfirm: true,
+                    closeOnConfirm: false
+                }, function () {
+                    $.ajax({
+                        type: "POST",
+                        async: true,
+                        url: '@Url.Action("DeleteOrderItem", "Site")',
+                        data: '{ "OrderItemNos":' + JSON.stringify(itenos) + '}',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (response) {
+                            if (response != "error") {
+                                swal({
+                                    title: "Success!",
+                                    text: "Order has been canceled",
+                                    type: "success",
+                                    showCancelButton: false,
+                                    confirmButtonColor: "#337ab7",
+                                    confirmButtonText: "OK",
+                                    closeOnConfirm: false,
+                                    closeOnCancel: false
+                                }, function (isConfirm) {
+                                    if (parseInt(response["count"]) > 0) {
+                                        var url = '@Url.Action("Orderconfirm", "Site")?' + 'ordno=' + response["orderno"];
+                                        window.location.href = url;
+                                    }
+                                    else {
+                                        var url = '@Url.Action("Manualuploads", "Site")';
+                                        window.location.href = url;
+                                    }
+                                });
+                            }
+                        },
+                        failure: function (response) {
+                            swal({
+                                title: "Error!",
+                                text: "Your session has been expiry please login.",
+                                type: "error",
+                                showCancelButton: false,
+                                confirmButtonColor: "#337ab7",
+                                confirmButtonText: "OK",
+                                closeOnConfirm: false,
+                                closeOnCancel: false
+                            }, function (isConfirm) {
+                                var url = '@Url.Action("Login", "Home")';
+                                window.location.href = url;
+                            });
+                        },
+                        error: function (response) {
+                            swal({
+                                title: "Error!",
+                                text: "Your session has been expiry please login.",
+                                type: "error",
+                                showCancelButton: false,
+                                confirmButtonColor: "#337ab7",
+                                confirmButtonText: "OK",
+                                closeOnConfirm: false,
+                                closeOnCancel: false
+                            }, function (isConfirm) {
+                                var url = '@Url.Action("Login", "Home")';
+                                window.location.href = url;
+                            });
+                        },
+                        complete: function () {
+
+                        }
+                    });
+                });
+            }
+            var Begin = function (response) {
+            }
+            BeginFun = Begin;
+            var Success = function (response) {
+                if (response != "error") {
+                    $("#myModal").modal("hide");
+                    swal({
+                        title: "Success!",
+                        text: "Your Details has been updated",
+                        type: "success",
+                        showCancelButton: false,
+                        confirmButtonColor: "#337ab7",
+                        confirmButtonText: "OK",
+                        closeOnConfirm: false,
+                        closeOnCancel: false
+                    }, function (isConfirm) {
+                        window.location.reload();
+                    });
+                }
+            }
+            SuccessFun = Success;
+            var Failure = function (response) {
+            }
+            FailureFun = Failure;
+            var Complete = function (response) {
+            }
+            CompleteFun = Complete;
+        });
+        function OnBegin(response) {
+            BeginFun(response);
+        }
+        function OnSuccess(response) {
+            SuccessFun(response);
+        }
+        function OnFailure(response) {
+            FailureFun(response);
+        }
+        function OnComplete(response) {
+            CompleteFun(response);
+        }
+    </script>
+}
+

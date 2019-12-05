@@ -1,0 +1,663 @@
+﻿@model List<TitleLeader.Models.Invoice.Invoice>
+@{
+    ViewBag.Title = "Manual Uploads";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    Int32 fillteroption = ViewBag.FillterOption != null ? Convert.ToInt32(ViewBag.FillterOption) : 0;
+}
+<div class="padding-box">
+    <div class="open-cart-text-box open-cart-text-box-reserch save-later-section">
+        <h3 class="haeding-text-gry"> Review invoices.</h3>
+        <div class="row margin-30">
+            <div class="col-sm-4">
+                <div class="paid-green-box">
+ 
+                    <span>Total Amount Due</span>
+                    <h2>$ @ViewBag.invsum</h2>
+                </div>
+            </div>
+
+            <div class="col-sm-8 gray-header">
+                <div class="open-carts-box">
+                    <div class="heading-blue-box">
+
+                        <span>Past Due Overview</span>
+                        <span>Total $ @ViewBag.invsum</span>
+                    </div>
+                    <div class="box-10-padding">
+                        <div class="col-sm-3 box-part box-part-rates">
+                            <span>10+ days overdue</span>
+                            <p>@ViewBag.overdue1per% <span>$@ViewBag.overdue1sum</span></p>
+                        </div>
+                        <div class="col-sm-3 box-part box-part-rates">
+                            <span>15+ days overdue</span>
+                            <p>@ViewBag.overdue2per% <span>$@ViewBag.overdue2sum</span></p>
+                        </div>
+                        <div class="col-sm-3 box-part box-part-rates">
+                            <span>20+ days overdue</span>
+                            <p>@ViewBag.overdue3per% <span>$@ViewBag.overdue3sum</span></p>
+                        </div>
+                        <div class="col-sm-3 box-part box-part-rates">
+                            <span>30+ days overdue</span>
+                            <p>@ViewBag.overdue4per% <span>$@ViewBag.overdue4sum</span></p>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        @using (Html.BeginForm("Invoice", "Site", FormMethod.Post, new { @id = "form-search" }))
+        {
+            <div class="row">
+                <div class="col-sm-4 text-srch">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="btn-search" style="cursor:pointer;"><i class="glyphicon glyphicon-search"></i></span>
+                        <input id="orderitemno" value="@ViewBag.search" type="text" class="form-control" name="orderitemno" placeholder="Search notifications">
+                        <input id="hdnval" name="hdnval" type="hidden" value="1" />
+                    </div>
+                </div>
+                <div class="col-sm-3 text-right">
+                    @*<ul class="filter-box">
+                        <li>view</li>
+                        <li><a href="#"><i class="fa fa-th-large" aria-hidden="true"></i></a></li>
+                        <li><a href="#"><i class="fa fa-th-list" aria-hidden="true"></i></a></li>
+                    </ul>*@
+                </div>
+                <div class="col-sm-3 text-right">
+                    <select class="form-control" id="ddlFillter" name="fillter">
+                        @switch (fillteroption)
+                        {
+                            case 0:
+                                <option value="0" selected="selected">Date</option>
+                                <option value="1">Order Number</option>
+                                <option value="2">Invoice Number</option>                               
+                                break;
+                            case 1:
+                                <option value="0">Date</option>
+                                <option value="1" selected="selected">Order Number</option>
+                                <option value="2">Invoice Number</option>                              
+                                break;
+                            case 2:
+                                <option value="0">Date</option>
+                                <option value="1">Order Number</option>
+                                <option value="2" selected="selected">Invoice Number</option>                              
+                                break;                          
+                        }
+                    </select>
+                </div>
+            </div>
+        }
+        <div class="row">
+            <div class="col-sm-12 tble-btn">
+                <a href="#" class="aside-btn">Pay all selected</a>
+            </div>
+        </div>
+
+
+        <div class="table-responsive">
+            <table class="table" id="table-order-con" >
+                <thead>
+                    <tr>
+                        <th>
+                            <div class="checkbox">
+                                <label><input type="checkbox" id="chk-select-header" ></label>
+                            </div>
+                        </th>
+                        <th>Invoice #</th>
+                        <th>Order #</th>
+                        <th>Order Date</th>
+                       
+                        <th># of search</th>
+                        <th>Total Amount</th>
+                        <th>Due</th>
+                        <th>Paid</th>
+                        <th>Status</th>
+                        <th> &nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var m in Model)
+                    {
+                        <tr>
+                            <td>
+                                <div class="checkbox">
+                                    <label><input type="checkbox" class="chk-select" id="chk-item" ></label>
+                                </div>
+                            </td>
+                            <td>@m.inv_no</td>
+                            <td>@m.order_no</td>
+                            <td>@Convert.ToDateTime(m.created_on).ToString("MM-dd-yyyy")</td>
+                           
+                            <td>@m.search</td>
+ 
+                            <td>$ @m.total_amount</td>
+                            <td>$ @m.amount_due</td>
+                            <td>$ @m.amount_paid</td>
+                            @if (@m.status == "D")
+                            {
+                                <td><span class="red">Due</span></td>
+
+                            }
+                            else
+                            {
+                                <td><span class="text-success">Paid</span></td>
+                            }
+                  
+                             <td><span ><a href="@Url.Action("PaymentCompleteSearch", "Site", new { @ordno = @m.order_no, @invno=@m.inv_no }, null)">Pay Now</a> </span> <a type="button" style="cursor:pointer" data-container="body" data-toggle="popover" data-html="true" data-placement="top" data-content='<ul class="nav"><li><a href="#" class="docs_name" order_no="@m.order_no"><i class="fa fa-file-pdf-o btn-danger"></i> Download PDF</li><li><a href="#"><i class="fa fa-envelope"></i> Email Report</li><li><a href="#"><i class="fa fa-print"></i> Print Report</li><li><a href="#" order_no="@m.order_no"  class="btnaskquestion"><i class="fa fa-question"></i> Ask Question Report</li></ul>'><img class="img-icon" src="~/Content/images/dots.png"></a></td>
+                        </tr>
+                    }
+
+
+                </tbody>
+            </table>
+        </div>
+
+                   
+                    
+                   
+
+                   
+        <div class="row">
+
+           
+            <div class="col-sm-6 tble-btn">
+                <a href="#" class="aside-btn">Pay all selected</a>
+
+            </div>
+            <div class="col-sm-6">
+                <div class="pagination">
+                    <a href="#">«</a>
+                    <a href="#"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
+                    <a href="#">1</a>
+
+                    <a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
+                    <a href="#">»</a>
+                </div>
+            </div>
+  <input type="hidden" id="txttotalamonut" name="txttotalamonut" class="form-control" disabled value="" />
+    <input type="hidden" id="txtinv" name="txtinv" value="" />
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog" id="content_block">
+
+    </div>
+</div>
+<div class="modal fade" id="myModal1" role="dialog">
+    <div class="modal-dialog" id="content_block">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><i class="glyphicon glyphicon-file"></i> Document List</h4>
+            </div>
+            <div class="modal-body">
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="divlink" divurl="@Url.Action("DownloadDocument","Site")">
+
+</div>
+@section footer
+{
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/modernizr-2.6.2.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+
+    <script>
+
+        function printData() {
+            var divToPrint = document.getElementById("printdv");
+            newWin = window.open("");
+            newWin.document.write(divToPrint.outerHTML);
+            newWin.print();
+            newWin.close();
+        }
+
+        $(document).on('click', ".btn_print", function () {
+            printData();
+        })
+
+        function myfunction(e) {
+            $(e).closest('tr').next('tr').toggle();
+        }
+
+
+        $(document).ready(function () {
+            $("#btn-search").click(function () {
+                $("#form-search").submit();
+            });
+            $('[data-toggle="popover"]').popover();
+            var Begin = function (response) {
+            }
+            BeginFun = Begin;
+
+            var Success = function (response) {
+                if (response == "success") {
+                    $("#myModal").modal("hide");
+
+                    swal({
+                        title: "Success!",
+                        text: "Thank you for asking an quesion!",
+                        type: "success",
+                        showCancelButton: false,
+                        confirmButtonColor: "#337ab7",
+                        confirmButtonText: "OK",
+                        closeOnConfirm: false,
+                        closeOnCancel: false
+                    });
+                }
+                else {
+                    swal({
+                        title: "Error!",
+                        text: "Some Technical Error",
+                        type: "error",
+                        showCancelButton: false,
+                        confirmButtonColor: "#337ab7",
+                        confirmButtonText: "OK",
+                        closeOnConfirm: false,
+                        closeOnCancel: false
+                    });
+                }
+            }
+            SuccessFun = Success;
+
+            var Failure = function (response) {
+            }
+            FailureFun = Failure;
+
+            var Complete = function (response) {
+            }
+            CompleteFun = Complete;
+        });
+
+
+        $(document).on("click", ".btnaskquestion", function () {
+            $('[data-original-title]').popover('hide');
+            var order_no = $(this).attr("orderid");
+            var item_no = $(this).attr("itemidl");
+            AskQuestion(order_no, item_no);
+            $("#myModal").modal({
+                show: true,
+                backdrop: 'static',
+                keyboard: false
+            });
+        });
+
+
+        var AskQuestion = function (order_no, item_no) {
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: '@Url.Action("AskQuestion", "Site")',
+                data: { orderno: '' + order_no + '', itemno: '' + item_no + '' },
+                contentType: "application/html; charset=utf-8",
+                dataType: "html",
+                success: function (response) {
+                    $("#content_block").html(response);
+                    $.validator.unobtrusive.parse($("#content_block"));
+                },
+                failure: function (response) {
+                    alert("Error in Personal");
+                },
+                error: function (response) {
+                    alert("Error in Personal");
+                },
+                complete: function (response) {
+
+                }
+            });
+        }
+
+
+        $("#chk-select-header").change(function () {
+            var headcheck = $(this).is(":checked");
+            $('#table-order-con>tbody>tr').each(function (i, n) {
+                $(this).find('td:eq(0)').find(".chk-select").prop('checked', headcheck);
+            });
+
+            var noofsearches = 0;
+            var totalamonut = 0;
+            var search_item = "";
+            $("#txttotalamonut").val(totalamonut);
+           
+            if (headcheck == 1) {
+                $("#table-order-con tr").each(function () {
+                    var row = $(this);
+                    if (row.find("td:eq(6)").text().trim() != "") {
+
+                if (noofsearches <= 0) {
+                    search_item = search_item + row.find("td:eq(1)").text().trim();
+                }
+                else {
+                    search_item = search_item + ',' + row.find("td:eq(1)").text().trim();
+                }
+
+                $("#txtinv").val(search_item);
+                var invamount = eval(row.find("td:eq(6)").text().trim().replace('$', ''));
+                totalamonut = eval(totalamonut) + eval(invamount);
+                noofsearches = noofsearches + 1;
+                $("#txttotalamonut").val(totalamonut);
+                
+                    }
+                })
+            }
+        });
+
+
+        jQuery('.chk-select').on("click", function (e) {
+            var noofsearches = 0;
+            var totalamonut = 0;
+            var search_item = "";
+            $("#txttotalamonut").val(totalamonut);
+           
+            $('#table-order-con tr').find('input[type="checkbox"]:checked').each(function () {
+                
+                var row = $(this).closest("tr")[0];
+                if (noofsearches <= 0) {
+                    search_item = search_item + row.cells[1].innerHTML;
+                }
+                else {
+                    search_item = search_item + ',' + row.cells[1].innerHTML;
+                }
+               
+                $("#txtinv").val(search_item);
+                var invamount = eval(row.cells[6].innerHTML.replace('$', ''));
+                totalamonut = eval(totalamonut) + eval(invamount);
+                noofsearches = noofsearches + 1;
+                $("#txttotalamonut").val(totalamonut);
+                
+            });
+        });
+
+
+
+        function OnBegin(response) {
+            BeginFun(response);
+        }
+        function OnSuccess(response) {
+            SuccessFun(response);
+        }
+        function OnFailure(response) {
+            FailureFun(response);
+        }
+        function OnComplete(response) {
+            CompleteFun(response);
+        }
+        $(document).ready(function () {
+
+
+            $(document).on('click', '.docs_name', function () {
+                var orderno = $(this).attr("order_no");
+                $link = $(this);
+
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("Documentids", "Site")?orderno=' + orderno,
+                    success: function (result) {
+                        var list = '<ul class="list-group">';
+                        var link = $("#divlink").attr("divurl");
+                        $.each(result, function (key, val) {
+                            list += '<li class="list-group-item"><a target="_blank" href="' + link + '?docid=' + val.DocumentId + '&docname=' + encodeURI(val.DocumentName) + '">' + val.DocumentName + "</a></li>";
+                        });
+
+                        list += '<li class="list-group-item"><a target="_blank" href="http://app.titleleader.com/titlesearchexample.pdf">Order_' + orderno + '.pdf</a></li>';
+                        list += '</ul>';
+
+                        $("#myModal1").find('.modal-body').html(list);
+                        $("#myModal1").modal("show");
+                    }
+                });
+            })
+
+
+
+        });
+    </script>
+
+<script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+<script>
+    var linkHandler = Plaid.create({
+        env: 'sandbox',
+        clientName: 'Stripe/Plaid',
+        key: '[Plaid key]',
+        product: ['auth'],
+        selectAccount: true,
+        onSuccess: function (public_token, metadata) {
+            // Send the public_token and account ID to your app server.
+            console.log('public_token: ' + public_token);
+            console.log('account ID: ' + metadata.account_id);
+        },
+        onExit: function (err, metadata) {
+            // The user exited the Link flow.
+            if (err != null) {
+                // The user encountered a Plaid API error prior to exiting.
+            }
+        },
+    });
+
+    // Trigger the Link UI
+    jQuery(document).ready(function () {
+        jQuery(function () {
+            jQuery('.linkButton').on("click", function (e) {
+                //modal.style.display = "block";
+
+                linkHandler.open();
+            });
+        });
+    });
+</script>
+
+<script src="https://checkout.stripe.com/checkout.js"></script>
+<script>
+    var handler = StripeCheckout.configure({
+        key: 'pk_test_gEjsiVWkC59M4AaLIUyZsKvl00z6ZSEFnD',
+        image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
+        locale: 'auto',
+        token: function (token) {
+            window.location.href = '@Url.Action("InvoiceCharge", "Site")?stripeToken=' + token.id + '&invno=' + $("#txtinv").val() + '&totalamount=' + $("#txttotalamonut").val();
+
+         
+            // You can access the token ID with `token.id`.
+            // Get the token ID to your server-side code for use.
+        }
+    });
+
+    document.getElementById('customButton').addEventListener('click', function(e) {
+        // Open Checkout with further options:
+        if ($("#txttotalamonut").val() == '' || $("#txttotalamonut").val() == 0) {
+
+            $('#table-order-con>tbody>tr').each(function (i, n) {
+                $(this).find('td:eq(0)').find(".chk-select").prop('checked', 0);
+
+            });
+            alert("Please select atlest one search");
+            e.preventDefault();
+        }
+        var amt = $("#txttotalamonut").val() * 100;
+        handler.open({
+            name: 'Bill Payment',
+            description:  $("#maxnoofsearches").val() +' Search',
+            zipCode: true,
+            amount: amt
+        });
+        e.preventDefault();
+        
+    });
+
+    // Close Checkout on page navigation:
+    window.addEventListener('popstate', function() {
+        handler.close();
+    });
+</script>
+  <script>
+      jQuery(document).ready(function () {
+          jQuery(function () {
+              jQuery('.creditcard').on("click", function (e) {
+                  //modal.style.display = "block";
+                  if ($("#txttotalamonut").val() == '' || $("#txttotalamonut").val() == 0) {
+
+                      $('#table-order-con>tbody>tr').each(function (i, n) {
+                          $(this).find('td:eq(0)').find(".chk-select").prop('checked', 0);
+
+                      });
+                      alert("Please select atlest one search");
+                      e.preventDefault();
+                  }
+                  var amt = $("#txttotalamonut").val() * 100;
+                  handler.open({
+                      name: 'Bill Payment',
+                      description: $("#maxnoofsearches").val() + ' Search',
+                      zipCode: true,
+                      amount: amt
+                  });
+                  e.preventDefault();
+                  
+              });
+          });
+      });
+
+</script>
+
+<script>
+      jQuery(document).ready(function () {
+          jQuery(function () {
+              jQuery('.aside-btn').on("click", function (e) {
+                  //modal.style.display = "block";
+                 
+                  if ($("#txttotalamonut").val() == '' || $("#txttotalamonut").val() == 0) {
+                    
+                      $('#table-order-con>tbody>tr').each(function (i, n) {
+                          $(this).find('td:eq(0)').find(".chk-select").prop('checked', 0);
+
+                      });
+                      alert("Please select atlest one search");
+                      e.preventDefault();
+                  }
+                  var amt = $("#txttotalamonut").val() * 100;
+                  handler.open({
+                      name: 'Bill Payment',
+                      description: $("#maxnoofsearches").val() + ' Search',
+                      zipCode: true,
+                      amount: amt
+                  });
+                  e.preventDefault();
+
+              });
+          });
+      });
+
+</script>
+<script>
+    // Get the modal
+    var modal = document.getElementById('myModal2');
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("myclose")[0];
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+        modal.style.display = "none";
+        jQuery('body').css('overflow', 'auto');
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            //modal.style.display = "none";
+            //jQuery('body').css('overflow','auto');
+        }
+    }
+
+</script>
+<script>
+$(document).ready(function(){
+    $("#txtnoofsearches").change(function () {
+        if($("#txtnoofsearches").val()<=$("#maxnoofsearches").val())
+        {
+            $("#txttotalamonut").val($("#txtnoofsearches").val() * $("#txtsearchesprice").val());
+
+        }
+        else
+        {
+            $("#txtnoofsearches").val($("#maxnoofsearches").val());
+        }
+  });
+});
+</script>
+<script>
+    jQuery(document).ready(function () {
+        jQuery(function () {
+            jQuery('.pay').on("click", function (e) {
+                //modal.style.display = "block";
+               
+                var price = $(this).attr("price");
+                $("#txtsearchesprice").val(price);
+                
+                var search = $(this).attr("search");
+                $("#maxnoofsearches").val(search);
+                $("#txtnoofsearches").val(search);
+                var invamount = $(this).attr("invamount");
+                $("#txttotalamonut").val(invamount);
+              
+                jQuery('#myModal2').css('display', 'block');
+                // modal screen activate
+                jQuery('body').css('overflow', 'hidden');
+            });
+        });
+    });
+
+</script>
+<style>
+.mymodal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 9999; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 650px; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  margin:0 auto;
+}
+
+/* Modal Content */
+.mymodal-content {
+  background-color: #e6eaf3;
+  margin: auto; 
+  padding: 20px;
+  border: 1px solid #e6eaf3;
+  width: 50%;
+  height: 600px;
+}
+
+/* The Close Button */
+.myclose {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.myclose:hover,
+.myclose:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+</style>
+}

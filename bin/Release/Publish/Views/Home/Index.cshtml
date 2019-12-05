@@ -1,0 +1,402 @@
+﻿
+@model dynamic
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<div class="row margin-0">
+    <div class="col-sm-6 margin-top-100">
+        @{ Html.RenderAction("ExcelFileUpload", "Site");}
+    </div>
+    <div class="col-sm-6 margin-top-200">
+        <div class="option-text option-text-2">
+            <span class="option-text-1">Utilize our manual entry form.</span>
+            @Html.ActionLink("GET STARTED", "manualuploads", "Site", new { area = "" }, new { @class = "aside-btn" })
+        </div>
+    </div>
+</div>
+<div class="padding-box-all">
+    <div class="row margin-0">
+        <div class="col-sm-4">
+            <div class="dasbord-top-box open-serch">
+                <h4>Open Searches</h4>
+                <p>@ViewBag.OrderCount</p>
+                <a href="@Url.Action("OpenOrders","Site")"> View</a>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="dasbord-top-box open-notification">
+                <h4>Search Notifications</h4>
+                <p>@ViewBag.ReturOders1</p>
+                <a href="@Url.Action("ActionRequired","Site")"> View</a>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="dasbord-top-box open-invoices">
+                <h4>Open Invoices</h4>
+                <p>$10K</p>
+                <a href="@Url.Action("Invoice","Site")"> View</a>
+
+            </div>
+
+        </div>
+
+    </div>
+    <div class="row margin-30">
+        <div class="col-sm-6">
+            <div class="serch-text-option">
+                <h4><i class="fa fa-search" aria-hidden="true"></i>Order Overiew</h4>
+
+            </div>
+        </div>
+        <div class="col-sm-6 text-srch text-srch-option-inpt">
+            @using (Html.BeginForm("OpenOrders", "Site", FormMethod.Post, new { @id = "form-search" }))
+            {
+                <div class="input-group">
+                    <span class="input-group-addon" id="btn-search" style="cursor:pointer;"><i class="glyphicon glyphicon-search"></i></span>
+                    <input id="orderid" type="text" value="@ViewBag.search" class="form-control" name="orderid" placeholder="Search Orders">
+                </div>
+            }
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-sm-12 table-dashbord">
+            <div class="table-dashbord-white">
+                <div class="table-head-part">
+                    <h2>Recent Orders</h2>
+                </div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Batch #</th>
+                                <th>Date</th>
+                                <th style="width:70%;">Status</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var m in Model.OpenOrderModels)
+                            {
+                                <tr>
+                                    <td><a href="@Url.Action("OpenSearch", "Site", new { @ordno = @m.OrderNo }, null)"> @m.OrderNo</a></td>
+                                    <td>@Convert.ToDateTime(m.OrderDate).ToString("MM/dd/yyyy")</td>
+                                    <td>
+                                        @{
+                                            var per = (m.Search * 100) / 30;
+                                        }
+                                        <span class="prgress-text-ratio">@m.Search of 30</span>
+                                        <div class="progress">
+
+                                            <div class="progress-bar" role="progressbar" aria-valuenow="@per" aria-valuemin="0" aria-valuemax="100" style="width:@per%">
+                                                <span class="sr-only">@per % Complete</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <a href="@Url.Action("OpenOrders","Site")" class="tble-viw">View all</a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6 table-dashbord">
+            <div class="table-dashbord-white">
+                <div class="table-head-part">
+                    <h2>Search Turnaround</h2>
+                </div>
+                <div class="pei-chart-box text-center">
+                    <img src="~/Content/images/pei-chart.png">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 table-dashbord">
+            <div class="table-dashbord-white">
+                <div class="table-head-part">
+                    <h2>Completed Orders</h2>
+                </div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Batch #</th>
+                                <th>Date</th>
+                                <th style="width:70%;">Status</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var m in Model.CompletedOrder)
+                            {
+                                <tr>
+                                    <td><a href="@Url.Action("CompleteOrder","Site")"> @m.OrderNo</a></td>
+                                    <td>@Convert.ToDateTime(m.OrderDate).ToString("MM/dd/yyyy")</td>
+                                    <td>
+                                        @{
+                                            var per = (m.Search * 100) / 30;
+                                        }
+                                        <span class="prgress-text-ratio">@m.Search of 30</span>
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar" aria-valuenow="@per" aria-valuemin="0" aria-valuemax="100" style="width:@per%">
+                                                <span class="sr-only">@per % Complete</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+                <a href="@Url.Action("CompleteOrder","Site")" class="tble-viw">View all</a>
+            </div>
+        </div>
+    </div>
+    <div class="row margin-30">
+        <div class="col-sm-6">
+            <div class="serch-text-option">
+                <h4><i class="fa fa-bell-o" aria-hidden="true"></i>Order Overiew</h4>
+            </div>
+        </div>
+        <div class="col-sm-6 text-srch text-srch-option-inpt">
+            @using (Html.BeginForm("SaveForLater", "Site", FormMethod.Post, new { @id = "form-search1" }))
+            {
+                <div class="input-group">
+                    <span class="input-group-addon" id="btn-search1" style="cursor:pointer;"><i class="glyphicon glyphicon-search"></i></span>
+                    <input id="orderid" type="text" value="@ViewBag.search" class="form-control" name="orderid" placeholder="Search Orders">
+                </div>
+            }
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-sm-6 table-dashbord">
+            <div class="table-dashbord-white">
+                <div class="table-head-part table-head-part-yelo">
+                    <h2><i class="fa fa-bell-o" aria-hidden="true"></i>Action Required!</h2>
+                </div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Search #</th>
+                                <th>Address</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var k in Model.DatauploadSave)
+                            {
+                                <tr>
+                                    <td><a href="@Url.Action("ActionRequired","Site")"> @k.order_no</a></td>
+                                    <td>@k.order_no @k.item_no @k.house_no @k.street_add @k.city, @k.state @k.zip_code</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <a href="@Url.Action("ActionRequired","Site")" class="tble-viw">View all</a>
+            </div>
+        </div>
+        <div class="col-sm-6 table-dashbord">
+            <div class="table-dashbord-white">
+                <div class="table-head-part table-head-part-yelo">
+                    <h2><i class="fa fa-file-pdf-o" aria-hidden="true"></i>Saved For Later</h2>
+                </div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Search #</th>
+                                <th>Address</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var k in Model.DatauploadSave)
+                            {
+                                <tr>
+                                    <td><a href="@Url.Action("SaveForLater", "Site")"> @k.order_no</a></td>
+                                    <td>@k.order_no @k.item_no @k.house_no @k.street_add @k.city, @k.state @k.zip_code</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <a href="@Url.Action("SaveForLater","Site")" class="tble-viw">View all</a>
+            </div>
+        </div>
+    </div>
+    <div class="row margin-30">
+        <div class="col-sm-6">
+            <div class="serch-text-option">
+                <h4><i class="fa fa-usd" aria-hidden="true"></i>Invoices</h4>
+            </div>
+        </div>
+        <div class="col-sm-6 text-srch text-srch-option-inpt">
+            <div class="input-group">
+                <span class="input-group-addon"><a href="@Url.Action("Invoice","Site")"<i class="glyphicon glyphicon-search"></i></a></span>
+                <input id="username" type="text" class="form-control" name="username" placeholder="Search Invoices">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4 table-dashbord">
+            <div class="table-dashbord-white table-dashbord-green">
+                <div class="table-head-part table-head-part-green">
+                    <h2>Invoice Total</h2>
+                    <div class="padding-40">
+                        <p>Total <br>Amount due</p>
+                        <span class="rates">$60,726</span>
+                        <p class="open-invoic-bottom"><span>16</span>open invoices</p>
+                        <a href="#" class="aside-btn">upload</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4 table-dashbord">
+            <div class="table-dashbord-white">
+                <div class="table-head-part table-head-part-green">
+                    <h2>Invoice Overview</h2>
+                </div>
+                <div class="over-view-box-rate">
+                    <div class="over-view-box-rate-1">
+                        <span>30+ days overdue</span>
+                        <p class="rate-full"><span>76%</span> $3,642</p>
+                    </div>
+                    <div class="over-view-box-rate-1">
+                        <span>60+ days overdue</span>
+                        <p class="rate-full"><span>27%</span> $1,242</p>
+                    </div>
+                    <div class="over-view-box-rate-1">
+                        <span>90+ days overdue</span>
+                        <p class="rate-full"><span>11%</span> $865</p>
+                    </div>
+                    <div class="over-view-box-rate-1">
+                        <span>90+ days overdue</span>
+                        <p class="rate-full"><span>11%</span> $180</p>
+
+                    </div>
+                </div>
+                <a href="@Url.Action("Invoice","Site")" class="tble-viw">View all</a>
+            </div>
+        </div>
+        <div class="col-sm-4 table-dashbord">
+            <div class="table-dashbord-white">
+                <div class="table-head-part table-head-part-green">
+                    <h2>Recent Invoices</h2>
+                </div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Invoice </th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var l in Model.RecentInvouce)
+                            {
+                                <tr>
+                                    <td><a href="@Url.Action("Invoice", "Site")"> @l.INV_NO </a></td>
+                                    <td>$@l.AMOUNT</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <a href="@Url.Action("Invoice","Site")" class="tble-viw">View all</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section footer
+{
+    <script>
+        $(document).ready(function () {
+            $("#btn-search1").click(function () {
+                $("#form-search1").submit();
+            });
+        });
+        $(document).ready(function () {
+            $("#btn-search").click(function () {
+                $("#form-search").submit();
+            });
+        });
+        var funbegin = "";
+        var funfailure = "";
+        var funsuccess = "";
+        var funcomplete = "";
+        $(document).ready(function () {
+            $("#btn_file").click(function () {
+                $("#UploadFile").trigger('click');
+            });
+            $("#UploadFile").change(function (e) {
+                var file = $('#UploadFile')[0].files[0];
+                $("#btn_file").val(file.name);
+            });
+            $("#btn_file_upload").click(function () {
+                $("#form_upload").submit();
+            });
+            funbegin = function (response) {
+                $("#btn_file_upload").attr('disabled', 'disabled');
+                $("#btn_file_upload").html('Upload <i class="fa fa-refresh fa-spin"></i>');
+            }
+            funfailure = function (response) {
+            }
+            funsuccess = function (response) {
+                if (response != "error") {
+                    swal({
+                                title: "Success!",
+                                text: "Order no : " + response,
+                                type: "success",
+                                showCancelButton: false,
+                                confirmButtonColor: "#337ab7",
+                                confirmButtonText: "OK",
+                                closeOnConfirm: false,
+                                closeOnCancel: false
+                            }, function (isConfirm) {
+                                var url = '@Url.Action("Orderconfirm", "Site")?' + 'ordno=' + response;
+                                window.location.href = url;
+                            });
+                }
+                else {
+                    swal({
+                        title: "Error!",
+                        text: "Error to save orders",
+                        type: "error",
+                        showCancelButton: false,
+                        confirmButtonColor: "#337ab7",
+                        confirmButtonText: "OK",
+                        closeOnConfirm: false,
+                        closeOnCancel: false
+                    });
+                }
+            }
+            funcomplete = function (response) {
+                $("#btn_file_upload").html('upload');
+                $("#btn_file_upload").removeAttr('disabled');
+                $("#UploadFile").val('');
+                $("#btn_file").val('');
+            }
+        });
+
+        function OnBegin(response) {
+            funbegin(response);
+        }
+        function OnFailure(response) {
+            funfailure(response);
+        }
+        function OnSuccess(response) {
+            funsuccess(response);
+        }
+        function OnComplete(response) {
+            funcomplete(response);
+        }
+    </script>
+}

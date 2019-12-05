@@ -1,0 +1,605 @@
+﻿@model List<TitleLeader.Models.Invoice.InvoiceCompleteOrders>
+@{
+    ViewBag.Title = "CompleteSearch";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    var userdetails = new TitleLeader.Models.UserRegistrationModels.UserMaster();
+    userdetails = (TitleLeader.Models.UserRegistrationModels.UserMaster)ViewBag.UserDetails;
+    Int32 fillteroption = ViewBag.FillterOption != null ? Convert.ToInt32(ViewBag.FillterOption) : 0;
+}
+<link href="~/Content/css/style.css" rel="stylesheet" />
+<style>
+    .activeg
+{
+	display:block;
+}
+tr.hiddenn {
+    display: none;
+}
+</style>
+<div class="padding-box">
+    <div class="open-cart-text-box open-cart-text-box-reserch">
+        <h6 class="haeding-text-gry"> Bacth search details</h6>
+        <div class="top-table">
+            <table class="table">
+                <thead>
+                    <tr>
+                         <th>Invoice No #</th>
+                        <th>Order #</th>
+                        <th>Order date</th>
+                        <th># of Searches</th>
+                        <th>Ordered by</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+<input type="hidden" id="txtinvno" name="txtinvno"   value="@ViewBag.Invno" />
+ <input type="hidden" id="txtorderno" name="txtorderno"   value="@Model.FirstOrDefault().order_no" />
+                        <td>@ViewBag.Invno</td>
+                        <td>@Model.FirstOrDefault().order_no</td>
+                        <td>@Model.FirstOrDefault().order_date.ToString("MM-dd-yyyy")</td>
+                        <td>@ViewBag.OrderCount</td>
+                        <td>@userdetails.Firstname @userdetails.Lastname</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+  <div class="register-right-section" style="padding: 0px;
+    width: 100%; min-height:0px;background-image: none;">
+
+          
+            <div class="card-box">
+                <a class="creditcard" >Credit Card</a>
+                <span> OR </span>
+                <a class="linkButton" >Direct Bank Transfer</a>
+            </div>
+            <div>
+        <div class="table-responsive table-responsive-no-before">
+            <table class="table" id="table-order-con">
+                <thead>
+                    <tr>
+<th>
+                            <div class="checkbox">
+                                <label><input type="checkbox" class="chk-header" id="chk-select-header"></label>
+                            </div>
+                        </th>
+                        <th>Search #</th>
+                        <th>Address</th>
+                        <th>Unit</th>
+                        <th>City</th>
+                        <th>state</th>
+                        <th>Zip</th>
+                        <th>Country</th>
+                         <th>Price</th>
+                        <th>Status</th>
+                        <th> &nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody id="content">
+                    @foreach (var ord in Model)
+                    {
+                        <tr class="z">
+ <td class="ttt">
+                                <div class="checkbox">
+                                    <label><input type="checkbox" class="chk-select" id="chk-item"></label>
+                                </div>
+                            </td>
+                            <td>@ord.item_no</td>
+                            <td>@ord.house_no @ord.street_add</td>
+                            <td>@ord.house_unit </td>
+                            <td>@ord.city </td>
+  <td>@ord.state </td>
+                            <td>@ord.state </td>
+                          <td>@ord.zip_code </td>
+                            <td>@ord.price </td>
+                            
+                           
+                            @if (ord.status == "P")
+                            {
+                                <td><span class="text-success">Paid</span></td>
+                            }
+else
+{
+<td><span class="red">Due</span></td>
+}
+                            <td></td>
+                            <td><i class="fa fa-eye" aria-hidden="true" style="cursor:pointer"   onclick="myfunction(this)"></i><a type="button" style="cursor:pointer" data-container="body" data-toggle="popover"  data-html="true" data-placement="top" data-content='<ul class="nav"><li><a href="#" class="docs_name" ord_itemno="@ord.item_no" order_no="@ord.order_no"><i class="fa fa-file-pdf-o btn-danger"></i> Download PDF</li><li><a href="#"><i class="fa fa-envelope"></i> Email Report</li><li><a href="#"><i class="fa fa-print"></i> Print Report</li><li><a href="#" orderid="@ord.order_no" itemidl="@ord.item_no" class="btnaskquestion"><i class="fa fa-question"></i> Ask Question Report</li></ul>'><img class="img-icon" src="~/Content/images/dots.png"></a></td>
+                        </tr>
+                        <tr class="hiddenn">
+                            <td colspan="12" class="div23">
+                                <div class="table-vew-top" >
+
+                                    <div class="text-right">
+                                        <span>Search details</span>
+                                        <ul class="pdf-section-list">
+                                            <li><a href="#" class="docs_name" ord_itemno="@ord.item_no" order_no="@ord.order_no"><i class="fa fa-file-pdf-o" aria-hidden="true"></i>Download PDF </a></li>
+                                            <li>|</li>
+                                            <li><a href="#"> <i class="fa fa-envelope" aria-hidden="true"></i>Email report </a></li>
+                                            <li>| </li>
+                                            <li><a href="#" class="btn_print"><i class="fa fa-print" aria-hidden="true"></i>Print report </a></li>
+                                            <li>|</li>
+                                            <li><a href="#" orderid="@ord.order_no" itemidl="@ord.item_no" class="btnaskquestion"><i class="fa fa-question" aria-hidden="true"></i> Ask a question</a></li>
+                                        </ul>
+
+                                    </div>
+                                    <div class="content-table" id="printdv">
+                                        <p>Search # :<strong> @ord.item_no</strong></p>
+                                        <p>Address:<strong> @ord.house_no @ord.street_add @ord.house_unit @ord.city @ord.state @ord.zip_code  -- </strong></p>
+                                        <p>Lot # : <strong> 123456789</strong></p>
+                                        <p>Tax ID # :<strong> 12-34568</strong></p>
+                                        <p>Square Block : <strong> N/A</strong></p>
+                                        <p>Subdivision :<strong> Chevy Chase</strong></p>
+                                        <p>Land Lot :<strong> 123456789</strong></p>
+                                        <p>District<strong> Bourbon</strong></p>
+                                        <p>Section <strong> 12</strong></p>
+                                        <p>Phase : <strong> 1</strong></p>
+                                        <p>Acerage :<strong> 15</strong></p>
+                                        <p>Owner Name :<strong>@ord.owner_first_name @ord.owner_last_name</strong></p>
+                                        <p>Aquire date :<strong> 12/21/1985</strong></p>
+                                        <p>Liens <strong> 0</strong></p>
+                                        <p>Search type : <strong>@ord.order_type @ord.item_no</strong></p>
+                                        <p>Record Type :<strong> Land record</strong></p>
+                                        <p>Tax Research :<strong> Current taxes only</strong></p>
+                                        <p>Coments</p>
+                                        <p>@ord.aditional_notes</p>
+
+                                    </div>
+                                </div>
+
+
+
+
+                            </td>
+
+                        </tr>
+                        <tr class="without-bg" style="background-color:#e4e7f2 !important;">
+                                <td colspan="9" style="background-color:#e4e7f2 !important;"></td>
+                            </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+
+
+
+
+<div class="row">
+                    <div class="col-md-2">No of searches</div>
+                    <div class="col-md-2">
+                      
+                        <input type="text" id="txtnoofsearches" name="txtnoofsearches" class="form-control" disabled value="" />
+                    </div>
+                    
+                    <div class="col-md-2">Amount</div>
+
+                    <div class="col-md-2"><input type="text" id="txttotalamonut" name="txttotalamonut" class="form-control" disabled value="" /></div>
+    <input type="hidden" id="txtsearch" name="txtsearch" value="" />
+</div>
+<div class="row">
+ <div class="col-md-2">
+<a href="#" class="aside-btn">Pay all selected</a>
+</div>
+ </div>
+        <div class="pagination" id="pagingControls">
+ 
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog" id="content_block">
+
+    </div>
+</div>
+<div class="modal fade" id="myModal1" role="dialog">
+    <div class="modal-dialog" id="content_block">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><i class="glyphicon glyphicon-file"></i> Document List</h4>
+            </div>
+            <div class="modal-body">
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="divlink" divurl="@Url.Action("DownloadDocument","Site")">
+
+</div>
+@section footer
+{
+
+<script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+<script>
+    var linkHandler = Plaid.create({
+        env: 'sandbox',
+        clientName: 'Stripe/Plaid',
+        key: '[Plaid key]',
+        product: ['auth'],
+        selectAccount: true,
+        onSuccess: function (public_token, metadata) {
+            // Send the public_token and account ID to your app server.
+            console.log('public_token: ' + public_token);
+            console.log('account ID: ' + metadata.account_id);
+        },
+        onExit: function (err, metadata) {
+            // The user exited the Link flow.
+            if (err != null) {
+                // The user encountered a Plaid API error prior to exiting.
+            }
+        },
+    });
+
+    // Trigger the Link UI
+    jQuery(document).ready(function () {
+        jQuery(function () {
+            jQuery('.linkButton').on("click", function (e) {
+                //modal.style.display = "block";
+
+                linkHandler.open();
+            });
+        });
+    });
+</script>
+
+<script src="https://checkout.stripe.com/checkout.js"></script>
+<script>
+    var handler = StripeCheckout.configure({
+        key: 'pk_test_gEjsiVWkC59M4AaLIUyZsKvl00z6ZSEFnD',
+        image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
+        locale: 'auto',
+        token: function (token) {
+            window.location.href = '@Url.Action("Charge", "Site")?stripeToken=' + token.id + '&invno=' + $("#txtinvno").val() + '&orderno=' + $("#txtorderno").val() + '&noofsearch=' + $("#txtnoofsearches").val() + '&totalamount=' + $("#txttotalamonut").val() + '&search=' + $("#txtsearch").val();
+
+            // You can access the token ID with `token.id`.
+            // Get the token ID to your server-side code for use.
+        }
+    });
+
+
+    jQuery('.aside-btn').on("click", function (e) {
+        // Open Checkout with further options:
+        if ($("#txttotalamonut").val() == '' || $("#txttotalamonut").val() == 0) {
+
+            $('#table-order-con>tbody>tr').each(function (i, n) {
+                $(this).find('td:eq(0)').find(".chk-select").prop('checked', 0);
+
+            });
+            alert("Please select atlest one search");
+            e.preventDefault();
+        }
+        var amt = $("#txttotalamonut").val() * 100;
+        handler.open({
+            name: 'Bill Payment',
+            description: $("#txtnoofsearches").val() + ' Search',
+            zipCode: true,
+            amount: amt
+        });
+        e.preventDefault();
+
+    });
+
+    // Close Checkout on page navigation:
+    window.addEventListener('popstate', function () {
+        handler.close();
+    });
+</script>
+  <script>
+      jQuery(document).ready(function () {
+          jQuery(function () {
+              jQuery('.creditcard').on("click", function (e) {
+                  if ($("#txttotalamonut").val() == '' || $("#txttotalamonut").val() == 0) {
+
+                      $('#table-order-con>tbody>tr').each(function (i, n) {
+                          $(this).find('td:eq(0)').find(".chk-select").prop('checked', 0);
+
+                      });
+                      alert("Please select atlest one search");
+                      e.preventDefault();
+                  }
+                  //modal.style.display = "block";
+                  var amt = $("#txttotalamonut").val() * 100;
+                  handler.open({
+                      name: 'Bill Payment',
+                      description: $("#txtnoofsearches").val() + ' Search',
+                      zipCode: true,
+                      amount: amt
+                  });
+                  e.preventDefault();
+
+              });
+          });
+      });
+
+</script>
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+    <script>
+
+        function printData() {
+            var divToPrint = document.getElementById("printdv");
+            newWin = window.open("");
+            newWin.document.write(divToPrint.outerHTML);
+            newWin.print();
+            newWin.close();
+        }
+
+        $(document).on('click', ".btn_print", function () {
+            printData();
+        })
+
+         function myfunction(e)
+ {
+  $(e).closest('tr').next('tr').toggle();
+ }
+
+
+        $(document).ready(function () {
+            $("#btn-search").click(function () {
+                $("#form-search").submit();
+            });
+            $('[data-toggle="popover"]').popover();
+            var Begin = function (response) {
+            }
+            BeginFun = Begin;
+
+            var Success = function (response) {
+                if (response == "success") {
+                    $("#myModal").modal("hide");
+
+                    swal({
+                        title: "Success!",
+                        text: "Thank you for asking an quesion!",
+                        type: "success",
+                        showCancelButton: false,
+                        confirmButtonColor: "#337ab7",
+                        confirmButtonText: "OK",
+                        closeOnConfirm: false,
+                        closeOnCancel: false
+                    });
+                }
+                else
+                {
+                    swal({
+                        title: "Error!",
+                        text: "Some Technical Error",
+                        type: "error",
+                        showCancelButton: false,
+                        confirmButtonColor: "#337ab7",
+                        confirmButtonText: "OK",
+                        closeOnConfirm: false,
+                        closeOnCancel: false
+                    });
+                }
+            }
+            SuccessFun = Success;
+
+            var Failure = function (response) {
+            }
+            FailureFun = Failure;
+
+            var Complete = function (response) {
+            }
+            CompleteFun = Complete;
+        });
+
+
+        $(document).on("click", ".btnaskquestion", function () {
+            $('[data-original-title]').popover('hide');
+            var order_no = $(this).attr("orderid");
+            var item_no = $(this).attr("itemidl");
+              AskQuestion(order_no, item_no);
+            $("#myModal").modal({
+                show: true,
+                backdrop: 'static',
+                keyboard: false
+            });
+        });
+
+
+
+        var AskQuestion = function (order_no, item_no) {
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: '@Url.Action("AskQuestion", "Site")',
+                data: { orderno: '' + order_no + '', itemno: '' + item_no + '' },
+                contentType: "application/html; charset=utf-8",
+                dataType: "html",
+                success: function (response) {
+                    $("#content_block").html(response);
+                    $.validator.unobtrusive.parse($("#content_block"));
+                },
+                failure: function (response) {
+                    alert("Error in Personal");
+                },
+                error: function (response) {
+                    alert("Error in Personal");
+                },
+                complete: function (response) {
+
+                }
+            });
+        }
+      
+
+        //$("#chk-select-header").change(function () {
+        //    var headcheck = $(this).is(":checked");
+        //    $('#table-order-con>tbody>tr').each(function (i, n) {
+        //        $(this).find('td:eq(0)').find(".chk-select").prop('checked', headcheck);
+        //    });
+
+        //    var noofsearches = 0;
+        //    var totalamonut = 0;
+        //    var search_item = "";
+        //    $("#txttotalamonut").val(totalamonut);
+        //    $("#txtnoofsearches").val(noofsearches);
+        //    $('#table-order-con tr').find('input[type="checkbox"]:checked').each(function () {
+
+        //        var row = $(this).closest("tr")[0];
+        //        if (noofsearches <= 0) {
+        //            search_item = search_item + row.cells[1].innerHTML;
+        //        }
+        //        else {
+        //            search_item = search_item + ',' + row.cells[1].innerHTML;
+        //        }
+        //        alert(eval(row.cells[8].innerHTML));
+        //        $("#txtsearch").val(search_item);
+        //        var invamount = eval(row.cells[8].innerHTML);
+        //        totalamonut = eval(totalamonut) + eval(invamount);
+        //        $("#txttotalamonut").val(totalamonut);
+        //        noofsearches = noofsearches + 1;
+        //        $("#txtnoofsearches").val(noofsearches);
+        //    });
+        //});
+
+
+
+
+
+        $("#chk-select-header").change(function () {
+
+            var noofsearches = 0;
+            var totalamonut = 0;
+            $("#txttotalamonut").val(totalamonut);
+            $("#txtnoofsearches").val(noofsearches);
+           
+            var search_item = "";
+            var headcheck = $(this).is(":checked");
+
+            $('#table-order-con>tbody>tr').each(function (i, n) {
+                $(this).find('td:eq(0)').find(".chk-select").prop('checked', headcheck);
+            });
+
+            if (headcheck == 1) {
+                $("#table-order-con tr").each(function () {
+                    var row = $(this);
+                    if (row.find("td:eq(8)").text().trim() != "") {
+
+                        if (noofsearches <= 0) {
+                            search_item = search_item + row.find("td:eq(1)").text().trim();
+                        }
+                        else {
+                            search_item = search_item + ',' + row.find("td:eq(1)").text().trim();
+                        }
+
+                        $("#txtsearch").val(search_item);
+                        var invamount = eval(row.find("td:eq(8)").text().trim());
+                        totalamonut = eval(totalamonut) + eval(invamount);
+                        $("#txttotalamonut").val(totalamonut);
+                        noofsearches = noofsearches + 1;
+                        $("#txtnoofsearches").val(noofsearches);
+                    }
+                })
+            }
+        });
+
+        //$("#chk-item").change(function () {
+        //    var headcheck = $(this).is(":checked");
+           
+        //    $.each($("input[name=chk-item]:checked").closest("td").siblings("td"),
+        // function () {
+        //        alert($(this).find("td").eq(8).html());
+        //        var invamount = $(this).find("td").eq(8).html();
+        //        $("#txttotalamonut").val(invamount);
+        //    });
+        //});
+        
+
+        jQuery('.chk-select').on("click", function (e) {
+            var noofsearches = 0;
+            var totalamonut = 0;
+            var search_item = "";
+            $("#txttotalamonut").val(totalamonut);
+            $("#txtnoofsearches").val(noofsearches);
+            $('#table-order-con tr').find('input[type="checkbox"]:checked').each(function () {
+                var row = $(this).closest("tr")[0];
+                if (noofsearches <= 0) {
+                    search_item = search_item + row.cells[1].innerHTML;
+                }
+                else
+                {
+                    search_item = search_item +','+ row.cells[1].innerHTML;
+                }
+              
+                $("#txtsearch").val(search_item);
+                var invamount = eval(row.cells[8].innerHTML);
+                totalamonut = eval(totalamonut) + eval(invamount);
+                $("#txttotalamonut").val(totalamonut);
+                noofsearches = noofsearches + 1;
+                $("#txtnoofsearches").val(noofsearches);
+            });
+        });
+
+       
+
+        //$("#chk-item").change(function () {
+        //    var headcheck = $(this).is(":checked");
+        //    $('#table-order-con>tbody>tr').each(function (i, n) {
+        //        if ($("#chk-item").is(':checked')) {
+                   
+        //            alert('45');
+                   
+        //        } else {
+        //            alert('46');
+        //        }
+        //    });
+
+        //});
+
+        function OnBegin(response) {
+            BeginFun(response);
+        }
+        function OnSuccess(response) {
+            SuccessFun(response);
+        }
+        function OnFailure(response) {
+            FailureFun(response);
+        }
+        function OnComplete(response) {
+            CompleteFun(response);
+        }
+        $(document).ready(function () {
+
+
+            $(document).on('click', '.docs_name', function () {
+                var orderno = $(this).attr("order_no");
+                var orderitm = $(this).attr("ord_itemno");
+              
+                $link = $(this);
+
+                $.ajax({
+                    type: "GET",
+                    
+                    url: '@Url.Action("Documentidsitem", "Site")',
+                    data: {'orderno':orderno,'itemno':orderitm},
+                    success: function (result) {
+                        var list = '<ul class="list-group">';
+                        var link = $("#divlink").attr("divurl");
+                        $.each(result, function (key, val) {
+                            list += '<li class="list-group-item"><a target="_blank" href="' + link + '?docid=' + val.DocumentId + '&docname=' + encodeURI(val.DocumentName) + '">' + val.DocumentName + "</a></li>";
+                        });
+
+                        list += '<li class="list-group-item"><a target="_blank" href="http://app.titleleader.com/titlesearchexample.pdf">Order_' + orderno + '.pdf</a></li>';
+                        list += '</ul>';
+
+                        $("#myModal1").find('.modal-body').html(list);
+                        $("#myModal1").modal("show");
+                    }
+                });
+            })
+
+
+
+        });
+    </script>
+}

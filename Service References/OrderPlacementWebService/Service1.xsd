@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="https://www.fnas.com/OrderPlacementService/v2/Service.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/" />
+  <xs:import schemaLocation="https://www.fnas.com/OrderPlacementService/v2/Service.svc?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:element name="PlaceOrder">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ClientID" type="xs:int" />
+        <xs:element minOccurs="0" name="OfficeID" type="xs:int" />
+        <xs:element minOccurs="0" name="FileNumber" nillable="true" type="xs:string" />
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/" minOccurs="0" name="PropertyAddress" nillable="true" type="q1:OrderPlacementService.PropertyAddress" />
+        <xs:element minOccurs="0" name="ClientsClientID" type="xs:int" />
+        <xs:element minOccurs="0" name="TransactionTypeID" type="xs:int" />
+        <xs:element minOccurs="0" name="ProductID" type="xs:int" />
+        <xs:element minOccurs="0" name="UnderwriterID" type="xs:int" />
+        <xs:element minOccurs="0" name="PrimaryContactID" type="xs:int" />
+        <xs:element minOccurs="0" name="EstimatedSettlementDate" nillable="true" type="xs:dateTime" />
+        <xs:element minOccurs="0" name="SalesPrice" type="xs:decimal" />
+        <xs:element minOccurs="0" name="LoanAmount" type="xs:decimal" />
+        <xs:element minOccurs="0" name="LoanNumber" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="CashOut" type="xs:decimal" />
+        <xs:element xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="PayoffMortgagees" nillable="true" type="q2:ArrayOfstring" />
+        <xs:element xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="OptionalActionGroupIDs" nillable="true" type="q3:ArrayOfint" />
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/" minOccurs="0" name="Lender" nillable="true" type="q4:OrderPlacementService.Partner" />
+        <xs:element minOccurs="0" name="IsLender" type="xs:boolean" />
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/" minOccurs="0" name="Buyers" nillable="true" type="q5:ArrayOfOrderPlacementService.BuyerSeller" />
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/" minOccurs="0" name="Sellers" nillable="true" type="q6:ArrayOfOrderPlacementService.BuyerSeller" />
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/" minOccurs="0" name="AdditionalPartners" nillable="true" type="q7:ArrayOfOrderPlacementService.Partner" />
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/" minOccurs="0" name="ClientsClient" nillable="true" type="q8:OrderPlacementService.Partner" />
+        <xs:element minOccurs="0" name="Notes" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="RequestAQUADecision" type="xs:boolean" />
+        <xs:element minOccurs="0" name="OriginalDebtAmount" type="xs:decimal" />
+        <xs:element minOccurs="0" name="UnpaidPrincipalAmount" type="xs:decimal" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PlaceOrderResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/" minOccurs="0" name="PlaceOrderResult" nillable="true" type="q9:PlaceOrderResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,14 @@
+﻿<div class="option-text">
+    <p class="text-size">Ready to start a new title search? <a href="@Url.Action("DownloadExcelFormat","Site")"><i class="fa fa-download"></i></a></p>
+    <span class="text-size2">Upload bulk order file here.</span>
+    @using (Ajax.BeginForm("ExcelFileUpload", "Site", new { }, new AjaxOptions { HttpMethod = "POST", OnBegin = "OnBegin", OnFailure = "OnFailure", OnSuccess = "OnSuccess", OnComplete = "OnComplete" }, new { @enctype = "multipart/form-data", @id = "form_upload" }))
+    {
+        <div class="ipat-darg-box">
+            <input type="file" name="UploadFile" id="UploadFile" accept="application/vnd.ms-excel" style="display:none;" />
+            <input type="hidden" name="FileName" id="FileName" />
+            <input type="text" id="btn_file" class="form-control inpt-drag" placeholder="Select file or drag & drop"><i class="fa fa-upload" aria-hidden="true"></i>
+        </div>
+        <a href="#" id="btn_file_upload" class="aside-btn">upload</a>
+    }
+</div>
+
